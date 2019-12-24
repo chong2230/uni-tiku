@@ -1,0 +1,58 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/news/news",
+			"style": {
+				"navigationBarTitleText": "资讯"
+			}
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}
+	],
+	"window": {
+	    "backgroundTextStyle": "light",
+	    "navigationBarBackgroundColor": "#fff",
+	    "navigationBarTitleText": "有知学堂",
+	    "navigationBarTextStyle": "black"
+	  },
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#CCCCCC",
+		"selectedColor": "#29B581",
+		"borderStyle": "white",
+		"list": [{
+        "selectedIconPath": "static/home-selected.png",
+        "iconPath": "static/home.png",
+        "pagePath": "pages/index/index",
+        "text": "题库"
+      },
+      {
+        "selectedIconPath": "static/news-selected.png",
+        "iconPath": "static/news.png",
+        "pagePath": "pages/news/news",
+        "text": "资讯"
+      },
+      {
+        "selectedIconPath": "static/my-selected.png",
+        "iconPath": "static/my.png",
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+		]
+	}
+}
