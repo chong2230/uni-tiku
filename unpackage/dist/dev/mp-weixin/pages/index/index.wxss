@@ -14,6 +14,23 @@
 	-webkit-justify-content: center;
 	        justify-content: center;
 }
+.uni-margin-wrap {
+	width:690rpx;
+	margin:0 30rpx;
+}
+.swiper {
+	height: 300rpx;
+}
+.swiper-item {
+	display: block;
+	height: 300rpx;
+	line-height: 300rpx;
+	text-align: center;
+}
+.swiper-image {
+	width: 100%;
+	height: 300rpx;
+}
 .logo {
 	height: 200rpx;
 	width: 200rpx;
