@@ -1,24 +1,44 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/Home",
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path": "pages/news/news",
+			"path": "pages/news/News",
 			"style": {
 				"navigationBarTitleText": "资讯"
 			}
 		},
 		{
-			"path": "pages/my/my",
+			"path": "pages/account/Account",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
-		}
-	],
+		},
+		{
+            "path" : "pages/news/NewsDetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/home/Category",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/account/Login",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/account/Regist",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/account/Setting",
+            "style" : {}
+        }
+    ],
 	"window": {
 	    "backgroundTextStyle": "light",
 	    "navigationBarBackgroundColor": "#fff",
@@ -38,19 +58,19 @@
 		"list": [{
         "selectedIconPath": "static/home-selected.png",
         "iconPath": "static/home.png",
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/home/Home",
         "text": "题库"
       },
       {
         "selectedIconPath": "static/news-selected.png",
         "iconPath": "static/news.png",
-        "pagePath": "pages/news/news",
+        "pagePath": "pages/news/News",
         "text": "资讯"
       },
       {
         "selectedIconPath": "static/my-selected.png",
         "iconPath": "static/my.png",
-        "pagePath": "pages/my/my",
+        "pagePath": "pages/account/Account",
         "text": "我的"
       }
 		]

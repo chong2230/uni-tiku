@@ -1,5 +1,13 @@
 <script>
 	export default {
+		globalData: {  
+			token: '',
+			isAudit: true,
+			course: '',
+			professionId: 2,
+			courseId: 3,
+			host: ''
+		}, 
 		onLaunch: function() {
 			console.log('App Launch')
 		},

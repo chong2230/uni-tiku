@@ -11,10 +11,34 @@ api.getBanners = params => http.get('/home/slide', params);
 /**
  * 获取首页功能
  */ 
-api.getHomeFunc = () => http.get('/home/functions');
+api.getHomeFunc = (params) => http.get('/home/functions', params);
 /**
  * 获取我的题库
  */ 
-api.getHomeMy = () => http.get('/home/my');
+api.getHomeMy = (params) => http.get('/home/my', params);
+/**
+ * 获取资讯
+ */
+api.getNews = (params) => http.get('/news/list', params);
+/**
+ * 获取资讯详情
+ */
+api.getNewsInfo = (params) => http.get('/news/info', params);
+/**
+ * 登录
+ */
+api.login = (params) => http.get('/user/login', params);
+/**
+ * 注册
+ */
+api.regist = (params) => http.get('/user/register', params);
+/**
+ * 找回密码，通过发送邮件找回
+ */
+api.findPassword = (params) => http.get('/user/findPassword', params);
+/**
+ * 设置密码
+ */
+api.setPassword = (params) => http.get('/user/resetPassword', params);
 
 export default api

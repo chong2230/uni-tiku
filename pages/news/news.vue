@@ -1,96 +1,109 @@
 <template>
-	<view class="index">
-		
+	<view class="content">
+		<view class="header">
+			<image class="header-img" :src="getHeaderImg()"></image>
+		</view>
+		<uni-list class="list">
+		    <uni-list-item v-for="(item, index) in data" title=" " :show-arrow="true" class="item"
+					@click="onItemClick(item)">
+				<text>{{item.name}}</text>
+				<text>{{item.publisher}}    {{item.publishTime}}</text>
+			</uni-list-item>		   
+		</uni-list>
 	
 	</view>
 </template>
 
 <script>
+	import uniList from "@/components/uni-list/uni-list.vue"
+	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+	import api from '@/common/api.js'
+	import { Config } from '@/config/config.js'
+	
 	export default {
+		components: {uniList,uniListItem},
 		data() {
 			return {
-				imgShow: false,
-				index: 0,
-				showBtn: false,
-				screenHeight: 0,
-				imgLength: 0,
-				providerList: [],
+				headerImg: '',
 				data: [],
-				detailDec: ""
+				pageNumber: 1,
+				pageSize: 10
 			}
 		},
 		onLoad(e) {
-		},
-		onShareAppMessage() {
-			return {
-				title: '欢迎使用uni-app看图模板',
-				path: '/pages/detail/detail?data=' + this.detailDec,
-				imageUrl: this.data[this.index]
-			}
+			this.load();
 		},
 		onNavigationBarButtonTap(e) {
 		},
-		methods: {			
-			collect() {
-				uni.showToast({
-					icon: 'none',
-					title: '点击收藏按钮'
-				})
-			},
-			swpierChange(e) {
-				this.index = e.detail.current;
-				uni.setNavigationBarTitle({
-					title: e.detail.current + 1 + '/' + this.imgLength
-				})
-			},
-			preImg(index) {
-				if (this.imgShow) { //防止点击过快导致重复调用 
-					return;
+		methods: {	
+			load() {
+				let params = {
+					professionId: getApp().globalData.professionId,
+					courseId: getApp().globalData.courseId,
+					pageNumber: this.pageNumber,
+					pageSize: this.pageSize
 				}
-				this.imgShow = true;
-				setTimeout(() => {
-					this.imgShow = false;
-				}, 1000)
-				setTimeout(() => {
-					uni.previewImage({
-						current: this.data[index],
-						urls: this.data
-					})
-				}, 150)
+				api.getNews(params).then((result)=>{
+					console.log(result);
+					if (result.code == 0) {
+						this.data = result.data.list || result.data;
+						this.headerImg = result.data.headerImg;
+					}
+				});
 			},
-			getData(e) {
-				this.$api.register({mobile: this.mobile}).then(res => {
-				   // 获得数据 
-				   console.log(res) 
-				}).catch(res => {
-				　　// 失败进行的操作
-				})				
+			getHeaderImg() {
+				return this.headerImg ? Config.baseUrl + this.headerImg : '/static/news-header.jpg';
+			},
+			onItemClick(data) {
+				console.log('onItemClick ', data);
+				setTimeout(()=>{
+					uni.navigateTo({
+						url: '/pages/news/NewsDetail?id='+data.id+'&type='+data.type,
+						success() {
+							console.log('success');
+						},
+						fail() {
+							console.log('fail');
+						},
+						complete() {
+							console.log('complete');
+						}
+					});
+				}, 100);
+				
 			}
 		}
 	}
 </script>
 
 <style>
-	page {
-		background-color: #000;
-		height: 100%;
-	}
-
-	swiper {
-		flex: 1;
-		width: 750upx;
-		background-color: #000;
+	.content {
 		display: flex;
 		flex-direction: column;
-	}
-
-	swiper-item {
-		display: flex;
 		align-items: center;
+		justify-content: center;
+		background-color: #f8f8f8;
 	}
-
-	image {
-		width: 750upx;
-		height: 1125upx;
+	.header {
+		width: 100%;
+		height: 300rpx;
+	}
+	/* .swiper-item {
+		display: block;
+		height: 300rpx;
+		line-height: 300rpx;
+		text-align: center;
+	} */
+	.header-img {
+		width: 100%;
+		height: 300rpx;
+	}
+	.list {
+		width: 100%;
+	}
+	.item {
+		width: 100%;
+		height: 60;
+		flex-direction: row;
 	}
 </style>
