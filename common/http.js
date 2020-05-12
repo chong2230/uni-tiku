@@ -8,12 +8,12 @@ http.request = (url, data, method, power) => {
 == 不通过access_token校验的接口
 == 文件下载接口列表
 == 验证码登录 */
-	let token = null;
-    try {
-        token = uni.getStorageSync('token');
-    } catch (e) {
-        // error
-    }    
+	let token = getApp().globalData.token;
+    // try {
+    //     token = uni.getStorageSync('token');
+    // } catch (e) {
+    //     // error
+    // }    
     switch (power){
         case 1:
             headers['Authorization'] = 'Basic a3N1ZGk6a3N1ZGk='
@@ -30,7 +30,13 @@ http.request = (url, data, method, power) => {
             }`
             break;
     }
-            
+    data = data || {};
+	data.plt = 'miniprogram';
+	data.dt = new Date().getTime();
+	let ver = Config.version;
+	console.log('ver=', ver);
+	data.ver = ver;
+	data.innerVer = 100000 + parseInt(ver.replace(/\./g, ''));
     return uni.request({
         url: Config.httpServer + url,
         method,

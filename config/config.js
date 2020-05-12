@@ -1,5 +1,6 @@
 export const Config = {
-	httpServer: 'https://practice.youzhi.tech',
 	// httpServer: 'https://test-practice.youzhi.tech',
-	baseUrl: 'https://static.youzhi.tech/'
+	httpServer: 'https://practice.youzhi.tech',
+	baseUrl: 'https://static.youzhi.tech/',
+	version: '1.3.4'
 }

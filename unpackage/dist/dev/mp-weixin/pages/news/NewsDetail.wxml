@@ -1,0 +1,1 @@
+<view class="content"><text class="title">{{data.name}}</text><view class="view-style"><text class="time">{{$root.f0}}</text><text class="author">{{data.publisher}}</text></view><block wx:if="{{headerImg!=''}}"><image class="header-img" src="{{getHeaderImg}}"></image></block><view class="html-style"><rich-text nodes="{{data.content}}"></rich-text></view></view>

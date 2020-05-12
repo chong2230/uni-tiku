@@ -1,11 +1,11 @@
 <script>
 	export default {
 		globalData: {  
-			token: '',
+			token: null,
 			isAudit: true,
-			course: '',
-			professionId: 2,
-			courseId: 3,
+			course: {},
+			professionId: 1,
+			courseId: 1,
 			host: ''
 		}, 
 		onLaunch: function() {

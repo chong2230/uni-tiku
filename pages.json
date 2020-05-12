@@ -20,23 +20,59 @@
 		},
 		{
             "path" : "pages/news/NewsDetail",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": ""
+			}
         }
         ,{
             "path" : "pages/home/Category",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "切换专业"
+			}
         }
         ,{
             "path" : "pages/account/Login",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "登录"
+			}
         }
         ,{
             "path" : "pages/account/Regist",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "注册"
+			}
         }
         ,{
             "path" : "pages/account/Setting",
+            "style" : {
+				"navigationBarTitleText": "设置"
+			}
+        }
+        ,{
+            "path" : "pages/home/Subject",
             "style" : {}
+        }
+        ,{
+            "path" : "pages/home/Timu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/home/Statistics",
+            "style" : {
+				"navigationBarTitleText":"学习评估"
+			}
+        }
+        ,{
+            "path" : "pages/account/About",
+            "style" : {
+				"navigationBarTitleText":"关于我们"
+			}
+        }
+        ,{
+            "path" : "pages/account/Service",
+            "style" : {
+				"navigationBarTitleText":"用户协议"
+			}
         }
     ],
 	"window": {
@@ -56,20 +92,20 @@
 		"selectedColor": "#29B581",
 		"borderStyle": "white",
 		"list": [{
-        "selectedIconPath": "static/home-selected.png",
-        "iconPath": "static/home.png",
+        "selectedIconPath": "static/images/home/home-selected.png",
+        "iconPath": "static/images/home/home.png",
         "pagePath": "pages/home/Home",
         "text": "题库"
       },
       {
-        "selectedIconPath": "static/news-selected.png",
-        "iconPath": "static/news.png",
+        "selectedIconPath": "static/images/home/news-selected.png",
+        "iconPath": "static/images/home/news.png",
         "pagePath": "pages/news/News",
         "text": "资讯"
       },
       {
-        "selectedIconPath": "static/my-selected.png",
-        "iconPath": "static/my.png",
+        "selectedIconPath": "static/images/home/my-selected.png",
+        "iconPath": "static/images/home/my.png",
         "pagePath": "pages/account/Account",
         "text": "我的"
       }

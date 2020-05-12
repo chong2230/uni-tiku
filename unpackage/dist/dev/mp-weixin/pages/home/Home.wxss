@@ -1,0 +1,114 @@
+
+.content {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	background-color: #f8f8f8;
+}
+.uni-margin-wrap {
+	width:690rpx;
+	margin:0 30rpx;
+}
+.swiper {
+	height: 300rpx;
+}
+.swiper-item {
+	display: block;
+	height: 300rpx;
+	line-height: 300rpx;
+	text-align: center;
+}
+.swiper-image {
+	width: 100%;
+	height: 300rpx;
+}
+.hot-view {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	width: 100%;
+	background-color: white;  
+	-webkit-box-orient: horizontal;  
+	-webkit-box-direction: normal;  
+	-webkit-flex-direction: row;  
+	        flex-direction: row;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+}
+.hot-item {
+	/* display: flex; */
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	width: 33%;
+	height: 150rpx;
+	left: 10%;
+	margin-top: 10rpx;
+	margin-bottom: 5rpx;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	position: relative;
+}
+.icon-bg {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	background-color: #41c364;
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 100rpx;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.icon-bg2 {
+	background-color: #ed675a;
+}
+.icon {
+	/* background-color: #41c364; */
+	width: 50rpx;
+	height: 50rpx;
+}
+.name {
+	font-size: 30rpx;
+	margin-top: 10rpx;
+	width: 33%;
+	text-align: center;
+}
+.title-bar {
+	width: 100%;
+	background-color: white;
+	border-bottom-color: #e2e3e4;
+	border-bottom-width: 2;
+	margin-top: 10rpx;
+	padding: 10rpx;
+	font-weight: bold;
+}
+.title {
+	font-size: 36rpx;
+	color: #8f8f94;
+	margin-top: 20rpx;
+	padding-left: 20rpx;
+	height: 30rpx;
+	text-align: left;
+	position: relative;
+}
+

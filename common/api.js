@@ -17,6 +17,14 @@ api.getHomeFunc = (params) => http.get('/home/functions', params);
  */ 
 api.getHomeMy = (params) => http.get('/home/my', params);
 /**
+ * 试卷列表/已购试卷列表
+ */
+api.getSubjectList = (params) => http.get(params.from == 'purchase' ? '/pay/hadBuyPapers' : '/home/functionInfo', params);
+/**
+ * 获取学习评估报告
+ */
+api.getStatistics = (params) => http.get('/exam/report', params);
+/**
  * 获取资讯
  */
 api.getNews = (params) => http.get('/news/list', params);

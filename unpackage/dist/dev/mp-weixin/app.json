@@ -1,8 +1,18 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/news/news",
-    "pages/my/my"
+    "pages/home/Home",
+    "pages/news/News",
+    "pages/account/Account",
+    "pages/news/NewsDetail",
+    "pages/home/Category",
+    "pages/account/Login",
+    "pages/account/Regist",
+    "pages/account/Setting",
+    "pages/home/Subject",
+    "pages/home/Timu",
+    "pages/home/Statistics",
+    "pages/account/About",
+    "pages/account/Service"
   ],
   "subPackages": [],
   "window": {
@@ -17,24 +27,25 @@
     "borderStyle": "white",
     "list": [
       {
-        "selectedIconPath": "static/home-selected.png",
-        "iconPath": "static/home.png",
-        "pagePath": "pages/index/index",
+        "selectedIconPath": "static/images/home/home-selected.png",
+        "iconPath": "static/images/home/home.png",
+        "pagePath": "pages/home/Home",
         "text": "题库"
       },
       {
-        "selectedIconPath": "static/news-selected.png",
-        "iconPath": "static/news.png",
-        "pagePath": "pages/news/news",
+        "selectedIconPath": "static/images/home/news-selected.png",
+        "iconPath": "static/images/home/news.png",
+        "pagePath": "pages/news/News",
         "text": "资讯"
       },
       {
-        "selectedIconPath": "static/my-selected.png",
-        "iconPath": "static/my.png",
-        "pagePath": "pages/my/my",
+        "selectedIconPath": "static/images/home/my-selected.png",
+        "iconPath": "static/images/home/my.png",
+        "pagePath": "pages/account/Account",
         "text": "我的"
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap34.json"
 }

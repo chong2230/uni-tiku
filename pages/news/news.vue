@@ -26,7 +26,7 @@
 			return {
 				headerImg: '',
 				data: [],
-				pageNumber: 1,
+				pageNum: 1,
 				pageSize: 10
 			}
 		},

@@ -11,7 +11,7 @@
 		</view>
 		<view class="hot-view">
 			<view class="hot-item" v-for="(item, index) in hotData">
-				<view class="icon-bg">
+				<view class="icon-bg" :class="index%2==0 ? '' : 'icon-bg2'" @click="getHotContent(item)">
 					<image class="icon" src="/static/flash.png"></image>
 				</view>
 				<text class="name">{{item.name}}</text>				
@@ -22,8 +22,8 @@
 		</view>
 		<view class="hot-view">
 			<view class="hot-item" v-for="(item, index) in myData.contents">
-				<view class="icon-bg">
-					<image class="icon" src="/static/flash.png"></image>
+				<view class="icon-bg" :class="index%2==0 ? '' : 'icon-bg2'" @click="getMineContent(item)">
+					<image class="icon" :src="iconBgs[index]"></image>
 				</view>
 				<text class="name">{{item.name}}</text>				
 			</view>
@@ -39,6 +39,8 @@
 			return {
 				title: '首页',
 				background: ['color1', 'color2', 'color3'],
+				iconBgs: ['/static/flash.png', '/static/ios-folder-outline.png', '/static/flash.png',
+					'/static/flash.png', '/static/flash.png', '/static/flash.png'],
 				indicatorDots: true,
 				autoplay: true,
 				interval: 2000,
@@ -50,9 +52,27 @@
 		},
 		onLoad() {
 			console.log(Config.baseUrl);
-			this.load()
+			this.initData();
+			this.load();
 		},
 		methods: {
+			initData() {
+				try {
+				    let token = uni.getStorageSync('token');
+					let course = uni.getStorageSync('course');					
+					if (token) {
+						getApp().globalData.token = token;
+					}
+					if (course) {
+						course = JSON.parse(course);
+						getApp().globalData.course = course;
+						getApp().globalData.professionId = course.professionId;
+						getApp().globalData.courseId = course.courseId || course.id;
+					}
+				} catch (e) {
+				    // error
+				}  
+			},
 			load() {
 				let params = {
 					professionId: getApp().globalData.professionId,
@@ -91,6 +111,43 @@
 			},
 			getImgUrl(img) {
 				return Config.baseUrl + img;
+			},
+			getHotContent(data) {
+				setTimeout(()=>{
+					uni.navigateTo({
+						url: '/pages/home/Subject?id='+data.id+'&title='+data.name						
+					});
+				}, 10);
+			},
+			getMineContent(data) {
+				if (getApp().globalData.token == null) {
+					this.goLogin();
+					return;
+				}
+				switch (data.name) {
+					case '试题收藏': 
+					break;
+					case '做题记录':
+					break;
+					case '错题库':
+					break;
+					case '题库笔记':
+					break;
+					case '学习评估':
+					uni.navigateTo({
+						url: '/pages/home/Statistics'
+					});
+					break;
+					default:
+					break;
+				}
+			},
+			goLogin() {
+				setTimeout(()=>{
+					uni.navigateTo({
+						url: '/pages/account/Login'
+					});
+				}, 10);
 			}
 		}
 	}
@@ -152,6 +209,10 @@
 		border-radius: 100rpx;
 		justify-content: center;
 		align-items: center;
+	}
+	
+	.icon-bg2 {
+		background-color: #ed675a;
 	}
 	
 	.icon {
