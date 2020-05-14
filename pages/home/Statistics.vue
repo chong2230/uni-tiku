@@ -1,24 +1,19 @@
 <template>
 	<view class="content">
-		<uni-list class="list">
-		    <uni-list-item v-for="(value, key, index) in data" title=" "  class="item">
-				<text class="txt1">{{key}}</text>
-				<view class="space"></view>
-				<text class="txt3">{{value}}</text>
-			</uni-list-item>		   
-		</uni-list>
+		<display-item v-for="(value, key, index) in data" class="item"
+			:txt1="key" :txt3="value" :showRight="false"
+		></display-item>
 	
 	</view>
 </template>
 
 <script>
-	import uniList from "@/components/uni-list/uni-list.vue"
-	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+	import displayItem from '@/components/display-item.vue'
 	import api from '@/common/api.js'
 	import { Config } from '@/config/config.js'
 	
 	export default {
-		components: {uniList,uniListItem},
+		components: {displayItem},
 		data() {
 			return {
 				data: []
@@ -74,11 +69,8 @@
 		width: 100%;
 	}
 	.item {
+		display: flex;
 		width: 100%;
 		height: 60;
-		flex-direction: row;
-	}
-	.space {
-		flex: 1;
 	}
 </style>

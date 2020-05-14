@@ -12,7 +12,8 @@
     "pages/home/Timu",
     "pages/home/Statistics",
     "pages/account/About",
-    "pages/account/Service"
+    "pages/account/Service",
+    "pages/account/Contact"
   ],
   "subPackages": [],
   "window": {
@@ -47,5 +48,5 @@
     ]
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap34.json"
+  "sitemapLocation": "sitemap87.json"
 }

@@ -92,14 +92,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  "uni-list": function() {
-    return __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 123))
-  },
-  "uni-list-item": function() {
-    return __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 77))
-  }
-}
+var components
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -148,16 +141,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
 var _api = _interopRequireDefault(__webpack_require__(/*! @/common/api.js */ 19));
-var _config = __webpack_require__(/*! @/config/config.js */ 18);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniList = function uniList() {__webpack_require__.e(/*! require.ensure | components/uni-list/uni-list */ "components/uni-list/uni-list").then((function () {return resolve(__webpack_require__(/*! @/components/uni-list/uni-list.vue */ 123));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniListItem = function uniListItem() {__webpack_require__.e(/*! require.ensure | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-list-item/uni-list-item.vue */ 77));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _config = __webpack_require__(/*! @/config/config.js */ 18);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var displayItem = function displayItem() {__webpack_require__.e(/*! require.ensure | components/display-item */ "components/display-item").then((function () {return resolve(__webpack_require__(/*! @/components/display-item.vue */ 138));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
-  components: { uniList: uniList, uniListItem: uniListItem },
+  components: { displayItem: displayItem },
   data: function data() {
     return {
       data: [] };

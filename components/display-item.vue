@@ -37,7 +37,8 @@
 				default: true
 			},
 			onClick: {
-				type: Function
+				type: Function,
+				default: ()=>{}
 			}
 		}
 	}
@@ -69,7 +70,7 @@
 		margin-right: 20rpx;
 		line-height: 40rpx;
 		color: #828282;
-		font-size: 30rpx;
+		font-size: 32rpx;
 	}
 	.right-arrow {
 		width: 20rpx;

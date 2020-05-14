@@ -5,16 +5,16 @@
 			<text class="title">有知学堂-考证无忧</text>
 		</view>
 		<uni-list class="list">
-		<uni-list-item title="版本信息" :showArrow="false" 
-				:showBadge="true" badgeText="1.3.4" class="item"
-				@click="goContact">
-		</uni-list-item>
-		<uni-list-item title="联系我们" :showArrow="true" class="item"
-				@click="goContact">
-		</uni-list-item>
-		<uni-list-item title="服务条款" :showArrow="true" class="item"
-				@click="goService">
-		</uni-list-item>
+			<uni-list-item title="版本信息" :showArrow="false" 
+					:showBadge="true" badgeText="1.3.4" class="item"
+					>
+			</uni-list-item>
+			<uni-list-item title="联系我们" :showArrow="true" class="item"
+					@click="goContact">
+			</uni-list-item>
+			<uni-list-item title="服务条款" :showArrow="true" class="item"
+					@click="goService">
+			</uni-list-item>
 		</uni-list>
 	</view>
 </template>
@@ -29,7 +29,9 @@
 		},
 		methods: {
 			goContact() {
-				
+				uni.navigateTo({
+					url: '/pages/account/Contact'
+				});
 			},
 			goService() {
 				uni.navigateTo({

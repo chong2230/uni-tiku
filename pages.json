@@ -74,6 +74,12 @@
 				"navigationBarTitleText":"用户协议"
 			}
         }
+        ,{
+            "path" : "pages/account/Contact",
+            "style" : {
+				"navigationBarTitleText":"联系我们"
+			}
+        }
     ],
 	"window": {
 	    "backgroundTextStyle": "light",

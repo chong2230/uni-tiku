@@ -161,12 +161,14 @@ var _default = { data: function data() {return { phone: '', pwd: '' };}, methods
       if (this.phone == '') {
         uni.showToast({
           title: '请输入手机号',
+          icon: "none",
           duration: 2000 });
 
         return false;
       } else if (this.pwd == '') {
         uni.showToast({
           title: '请输入密码',
+          icon: "none",
           duration: 2000 });
 
         return false;
@@ -190,10 +192,18 @@ var _default = { data: function data() {return { phone: '', pwd: '' };}, methods
           var pages = getCurrentPages();
           var prevPage = pages[pages.length - 2];
           prevPage.onLoad();
-          uni.navigateBack();
+          uni.showToast({
+            title: result.msg,
+            icon: "none",
+            duration: 2000,
+            success: function success() {
+              uni.navigateBack();
+            } });
+
         } else {
           uni.showToast({
             title: result.msg,
+            icon: "none",
             duration: 2000 });
 
         }

@@ -1,0 +1,1 @@
+<view class="content"><display-item vue-id="9a24f01e-1" txt1="联系邮箱" txt3="service@youzhi.tech" showRight="{{false}}" bind:__l="__l"></display-item><display-item vue-id="9a24f01e-2" txt1="公众号" txt3="有知学堂" showRight="{{false}}" bind:__l="__l"></display-item><display-item vue-id="9a24f01e-3" txt1="官方QQ客服群" txt3="878332066" showRight="{{false}}" bind:__l="__l"></display-item></view>

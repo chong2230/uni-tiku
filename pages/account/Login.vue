@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<input class="phone" focus @input="onPhoneInput" placeholder="输入手机号" />
-		<input class="password" placeholder="输入密码" />
+		<input class="password" password="true" placeholder="输入密码" @input="onPwdInput" />
 		<button class="login-btn" @click="login">登录</button>
 		<view>
 			<button class="regist-btn">注册</button>
@@ -31,12 +31,14 @@
 				if (this.phone == '') {
 					uni.showToast({
 						title: '请输入手机号',
+						icon: "none",
 						duration: 2000
 					});
 					return false;
 				} else if (this.pwd == '') {
 					uni.showToast({
 						title: '请输入密码',
+						icon: "none",
 						duration: 2000
 					});
 					return false;
@@ -60,10 +62,18 @@
 						let pages = getCurrentPages();
 						let prevPage = pages[pages.length - 2];
 						prevPage.onLoad();
-						uni.navigateBack();
+						uni.showToast({
+							title: result.msg,
+							icon: "none",
+							duration: 2000,
+							success: () => {
+								uni.navigateBack();		
+							}
+						});						
 					} else {
 						uni.showToast({
 							title: result.msg,
+							icon: "none",
 							duration: 2000
 						});
 					}
