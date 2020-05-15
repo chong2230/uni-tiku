@@ -1,8 +1,7 @@
 <template>
 	<view class="content">
 		<uni-list class="list">
-		    <uni-list-item v-for="(item, index) in data" title=" " :showArrow="false" class="item"
-					@click="onItemClick(item)">
+		    <uni-list-item v-for="(item, index) in data" title=" " :showArrow="false" class="item">
 				<view class="top">
 					<text class="type">{{item.type}}</text>
 					<text class="title">{{item.name}}</text>
@@ -11,8 +10,10 @@
 				<view class="bottom">
 					<text class="level">{{item.level}}</text>
 					<!-- <view class="space"></view> -->
-					<button class="handle-btn">查看解析</button>
-					<button class="handle-btn">开始做题</button>
+					<button v-if="!getNeedBuy(item)
+						&& item.userStatus == 3" class="handle-btn analysis-btn"
+						@click="startPractise(item, true)">查看解析</button>
+					<button class="handle-btn" @click="preparePractise(item)">{{getBtnText(item)}}</button>
 				</view>
 			</uni-list-item>		   
 		</uni-list>
@@ -31,22 +32,30 @@
 		data() {
 			return {
 				headerImg: '',
+				from: '',	// 来源，试卷列表 or 已购买purchase
 				data: [],
+				member: { level: 0, passed: false },	// 会员信息
+				title: '',
 				functionId: 1,
+				selectData: {},
 				pageNumber: 1,
 				pageSize: 10
 			}
 		},
 		onLoad(e) {
 			this.functionId = e.id;
-			// this.title = e.title;
+			this.title = e.title;
 			console.log(e.id, e.title);
+			if (e.from) this.from = e.from;
 			uni.setNavigationBarTitle({
 			　　title:e.title
 			})
 			this.load();
 		},
 		onNavigationBarButtonTap(e) {
+		},
+		computed: {
+			
 		},
 		methods: {	
 			load() {
@@ -58,6 +67,12 @@
 					pageSize: this.pageSize
 				}
 				console.log('params: ', params);
+				if (this.from == 'purchase') params.from = this.from;
+				if (getApp().globalData.course.curriculums) {
+					let ids = [];
+					ids.push(getApp().globalData.course.id);
+					params.curriculumIds = ids.join(',');
+				}
 				api.getSubjectList(params).then((result)=>{
 					console.log(result);
 					if (result.code == 0) {
@@ -65,9 +80,77 @@
 						this.headerImg = result.data.headerImg;
 					}
 				});
+				api.getUserMember({
+					courseId: getApp().globalData.courseId
+				}).then((result)=>{
+					console.log('getUserMember ', result);
+					if (result.code == 0) {
+						if (result.data) this.member = result.data;
+					}
+				});
 			},
 			getHeaderImg() {
 				return this.headerImg ? Config.baseUrl + this.headerImg : '/static/news-header.jpg';
+			},
+			getNeedBuy(item) {
+				return (this.member.level == 3 && this.member.passed)
+					|| (this.member.level < 2 && item.price > 0 && !item.hadPay);
+			},
+			getBtnText(item) {
+				let btnText = '开始做题';
+				let needBuy = this.getNeedBuy(item);
+				if (needBuy) {// 未购买会员、购买vip已通过考试、未购买试卷
+					btnText = '购买';
+				} else if (item.userStatus == 2) btnText = '继续做题';
+				else if (item.userStatus == 3) btnText = '重新开始';
+				return btnText;
+			},
+			preparePractise(rowData) {
+				let needBuy = this.getNeedBuy(rowData);
+				// 付费试卷，未付费
+				if (needBuy) {
+					this.goGoods(rowData);
+					return;
+				}
+				this.selectData = rowData;
+				let doModels = rowData.doModels ? rowData.doModels.split(',') : 1;
+				// 开始做题/继续做题
+				if (rowData.userStatus == 1 || rowData.userStatus == 3) {
+					// 根据后台返回的做题模式来做题
+					if (doModels.length == 2) this.chooseMode(rowData);
+					else this._startPractise(rowData, false, parseInt(doModels[0]));
+				} else {
+					// this.continueAlert.show();
+				}
+			},
+			startPractise(data, isAnalyse, doModel=1, type) {
+				if (!type) type = isAnalyse ? 1 : (data.userStatus == 2 ? 3 : 2);   // type: 1 查看解析 2 开始做题 3 继续做题
+					const { navigate, state } = this.props.navigation;
+					if (getApp().globalData.isAudit || getApp().globalData.token) {
+						let params = {
+							id: data.id, 
+							name: data.name,
+							functionName: this.title, 
+							functionId: this.functionId,
+							type: type,
+							doModel: doModel,   // 做题模式
+							isVisible: false, 
+							isAnalyse: isAnalyse
+						};
+						uni.navigateTo({
+							url: '/pages/home/Timu?' + this.parseObj(params)
+						});						
+					} else {
+						uni.navigateTo({
+							url: '/pages/account/Login'
+						});
+					}  
+			},
+			goGoods(rowData) {
+				
+			},
+			chooseMode(rowData) {
+				
 			},
 			onItemClick(data) {
 				console.log('onItemClick ', data);
@@ -86,6 +169,14 @@
 					});
 				}, 100);
 				
+			},
+			parseObj(obj) {
+				var str = '';
+				for (var key in obj) {
+					let val = obj[key];
+					str += key + '=' + val + '&';
+				}
+				return str.substr(0, str.length-1);
 			}
 		}
 	}
@@ -154,8 +245,7 @@
 		border-radius: 30rpx;
 		border-color: #ed675a;
 		border-width: 2rpx;
-		border-style: solid;
-		margin-right: 30rpx;
+		border-style: solid;		
 		width: 180rpx;
 		height: 50rpx;
 		line-height: 50rpx;
@@ -163,5 +253,8 @@
 		color: #ed675a;
 		background-color: #FFFFFF;
 		font-size: 26rpx;
+	}
+	.analysis-btn {
+		margin-right: 20rpx;
 	}
 </style>

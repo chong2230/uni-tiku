@@ -1999,6 +1999,10 @@ api.getSubjectList = function (params) {return _http.default.get(params.from == 
                                                                                                                                                      */
 api.getStatistics = function (params) {return _http.default.get('/exam/report', params);};
 /**
+                                                                                            * 获取会员信息
+                                                                                            */
+api.getUserMember = function (params) {return _http.default.get('/user/member', params);};
+/**
                                                                                             * 获取资讯
                                                                                             */
 api.getNews = function (params) {return _http.default.get('/news/list', params);};

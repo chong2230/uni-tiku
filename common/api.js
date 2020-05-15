@@ -25,6 +25,10 @@ api.getSubjectList = (params) => http.get(params.from == 'purchase' ? '/pay/hadB
  */
 api.getStatistics = (params) => http.get('/exam/report', params);
 /**
+ * 获取会员信息
+ */
+api.getUserMember = (params) => http.get('/user/member', params);
+/**
  * 获取资讯
  */
 api.getNews = (params) => http.get('/news/list', params);

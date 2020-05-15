@@ -104,6 +104,24 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var l0 = _vm.__map(_vm.data, function(item, index) {
+    var m0 = _vm.getNeedBuy(item)
+    var m1 = _vm.getBtnText(item)
+    return {
+      $orig: _vm.__get_orig(item),
+      m0: m0,
+      m1: m1
+    }
+  })
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        l0: l0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -162,6 +180,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _api = _interopRequireDefault(__webpack_require__(/*! @/common/api.js */ 19));
 var _config = __webpack_require__(/*! @/config/config.js */ 18);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniList = function uniList() {__webpack_require__.e(/*! require.ensure | components/uni-list/uni-list */ "components/uni-list/uni-list").then((function () {return resolve(__webpack_require__(/*! @/components/uni-list/uni-list.vue */ 131));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniListItem = function uniListItem() {__webpack_require__.e(/*! require.ensure | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-list-item/uni-list-item.vue */ 77));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
@@ -170,16 +189,21 @@ var _config = __webpack_require__(/*! @/config/config.js */ 18);function _intero
   data: function data() {
     return {
       headerImg: '',
+      from: '', // 来源，试卷列表 or 已购买purchase
       data: [],
+      member: { level: 0, passed: false }, // 会员信息
+      title: '',
       functionId: 1,
+      selectData: {},
       pageNumber: 1,
       pageSize: 10 };
 
   },
   onLoad: function onLoad(e) {
     this.functionId = e.id;
-    // this.title = e.title;
+    this.title = e.title;
     console.log(e.id, e.title);
+    if (e.from) this.from = e.from;
     uni.setNavigationBarTitle({
       title: e.title });
 
@@ -187,6 +211,9 @@ var _config = __webpack_require__(/*! @/config/config.js */ 18);function _intero
   },
   onNavigationBarButtonTap: function onNavigationBarButtonTap(e) {
   },
+  computed: {},
+
+
   methods: {
     load: function load() {var _this = this;
       var params = {
@@ -197,6 +224,12 @@ var _config = __webpack_require__(/*! @/config/config.js */ 18);function _intero
         pageSize: this.pageSize };
 
       console.log('params: ', params);
+      if (this.from == 'purchase') params.from = this.from;
+      if (getApp().globalData.course.curriculums) {
+        var ids = [];
+        ids.push(getApp().globalData.course.id);
+        params.curriculumIds = ids.join(',');
+      }
       _api.default.getSubjectList(params).then(function (result) {
         console.log(result);
         if (result.code == 0) {
@@ -204,9 +237,77 @@ var _config = __webpack_require__(/*! @/config/config.js */ 18);function _intero
           _this.headerImg = result.data.headerImg;
         }
       });
+      _api.default.getUserMember({
+        courseId: getApp().globalData.courseId }).
+      then(function (result) {
+        console.log('getUserMember ', result);
+        if (result.code == 0) {
+          if (result.data) _this.member = result.data;
+        }
+      });
     },
     getHeaderImg: function getHeaderImg() {
       return this.headerImg ? _config.Config.baseUrl + this.headerImg : '/static/news-header.jpg';
+    },
+    getNeedBuy: function getNeedBuy(item) {
+      return this.member.level == 3 && this.member.passed ||
+      this.member.level < 2 && item.price > 0 && !item.hadPay;
+    },
+    getBtnText: function getBtnText(item) {
+      var btnText = '开始做题';
+      var needBuy = this.getNeedBuy(item);
+      if (needBuy) {// 未购买会员、购买vip已通过考试、未购买试卷
+        btnText = '购买';
+      } else if (item.userStatus == 2) btnText = '继续做题';else
+      if (item.userStatus == 3) btnText = '重新开始';
+      return btnText;
+    },
+    preparePractise: function preparePractise(rowData) {
+      var needBuy = this.getNeedBuy(rowData);
+      // 付费试卷，未付费
+      if (needBuy) {
+        this.goGoods(rowData);
+        return;
+      }
+      this.selectData = rowData;
+      var doModels = rowData.doModels ? rowData.doModels.split(',') : 1;
+      // 开始做题/继续做题
+      if (rowData.userStatus == 1 || rowData.userStatus == 3) {
+        // 根据后台返回的做题模式来做题
+        if (doModels.length == 2) this.chooseMode(rowData);else
+        this._startPractise(rowData, false, parseInt(doModels[0]));
+      } else {
+        // this.continueAlert.show();
+      }
+    },
+    startPractise: function startPractise(data, isAnalyse) {var doModel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;var type = arguments.length > 3 ? arguments[3] : undefined;
+      if (!type) type = isAnalyse ? 1 : data.userStatus == 2 ? 3 : 2; // type: 1 查看解析 2 开始做题 3 继续做题
+      var _this$props$navigatio = this.props.navigation,navigate = _this$props$navigatio.navigate,state = _this$props$navigatio.state;
+      if (getApp().globalData.isAudit || getApp().globalData.token) {
+        var params = {
+          id: data.id,
+          name: data.name,
+          functionName: this.title,
+          functionId: this.functionId,
+          type: type,
+          doModel: doModel, // 做题模式
+          isVisible: false,
+          isAnalyse: isAnalyse };
+
+        uni.navigateTo({
+          url: '/pages/home/Timu?' + this.parseObj(params) });
+
+      } else {
+        uni.navigateTo({
+          url: '/pages/account/Login' });
+
+      }
+    },
+    goGoods: function goGoods(rowData) {
+
+    },
+    chooseMode: function chooseMode(rowData) {
+
     },
     onItemClick: function onItemClick(data) {
       console.log('onItemClick ', data);
@@ -225,6 +326,14 @@ var _config = __webpack_require__(/*! @/config/config.js */ 18);function _intero
 
       }, 100);
 
+    },
+    parseObj: function parseObj(obj) {
+      var str = '';
+      for (var key in obj) {
+        var val = obj[key];
+        str += key + '=' + val + '&';
+      }
+      return str.substr(0, str.length - 1);
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -87,8 +87,7 @@
 	border-radius: 30rpx;
 	border-color: #ed675a;
 	border-width: 2rpx;
-	border-style: solid;
-	margin-right: 30rpx;
+	border-style: solid;		
 	width: 180rpx;
 	height: 50rpx;
 	line-height: 50rpx;
@@ -96,5 +95,8 @@
 	color: #ed675a;
 	background-color: #FFFFFF;
 	font-size: 26rpx;
+}
+.analysis-btn {
+	margin-right: 20rpx;
 }
 
