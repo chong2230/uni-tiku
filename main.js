@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import './pc'
 import App from './App'
 import store from './store'  // 与vue项目中配置相同，可自行配置
 

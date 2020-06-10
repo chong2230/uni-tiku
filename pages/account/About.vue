@@ -35,7 +35,7 @@
 			},
 			goService() {
 				uni.navigateTo({
-					url: '/pages/account/Service'
+					url: '/pages/account/service'
 				});
 			}
 		}

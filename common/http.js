@@ -2,6 +2,7 @@ import { Config } from '@/config/config.js'
 
 const http = {}
 const headers = {}
+const baseUrl = Config.httpServer	//'/api';
     
 http.request = (url, data, method, power) => {
 /*     权限判断 因为有的接口请求头可能需要添加的参数不一样，所以这里做了区分
@@ -38,7 +39,7 @@ http.request = (url, data, method, power) => {
 	data.ver = ver;
 	data.innerVer = 100000 + parseInt(ver.replace(/\./g, ''));
     return uni.request({
-        url: Config.httpServer + url,
+        url: baseUrl + url,
         method,
         data: data,
         dataType: 'json',

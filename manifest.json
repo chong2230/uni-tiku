@@ -70,5 +70,25 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
-    }
+    },
+	"h5" : {
+		"router" : {
+			"mode" : "history"
+		},
+		"devServer" : {
+			"https" : false,
+			"port": 8080, //端口号
+			// "disableHostCheck": true,
+			"proxy" : {
+				"/api" : {
+					"target" : "https://practice.youzhi.tech", //这里是你的目标接口域名
+					"changeOrigin" : true, //是否跨域
+					"secure" : false, // 设置支持https协议的代理
+					"pathRewrite" : {
+						"^/api" : "/"
+					}
+				}				
+			}
+		}
+	}
 }

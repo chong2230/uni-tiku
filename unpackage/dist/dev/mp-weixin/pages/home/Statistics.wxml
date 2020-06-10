@@ -1,1 +1,0 @@
-<view class="content"><block wx:for="{{data}}" wx:for-item="value" wx:for-index="key"><display-item class="item" vue-id="{{'c1407a88-1-'+key}}" txt1="{{key}}" txt3="{{value}}" showRight="{{false}}" bind:__l="__l"></display-item></block></view>

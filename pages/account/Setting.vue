@@ -16,7 +16,7 @@
 			<text class="list-text">关于我们</text>
 			<image class="right-arrow" src="/static/images/icon/right-arrow.png"></image>
 		</view>
-		<button class="logout-btn">退出当前账号</button>
+		<button class="logout-btn" @click="logout">退出当前账号</button>
 	</view>
 </template>
 
@@ -34,11 +34,36 @@
 			},
 			goAbout() {
 				uni.navigateTo({
-					url: '/pages/account/About'
+					url: '/pages/account/about'
 				});
 			},
 			logout() {
-				
+				uni.showModal({
+				    title: '退出确认',
+					content: '您确定要退出吗？',
+					mask: true,
+					cancelText: '取消',
+					cancelColor: '#4789F7',
+					confirmText: '确定',
+					confirmColor: '#4789F7',
+				    success: function (res) {
+				        if (res.confirm) {
+							try {
+							    uni.removeStorageSync('token');
+								getApp().globalData.token = null;
+								let pages = getCurrentPages();
+								let prevPage = pages[pages.length - 2];
+								prevPage.onLoad();
+								uni.navigateBack();		
+							} catch (e) {
+							    // error
+							}
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+							
+				        }
+				    }
+				});
 			}
 		}
 	}
@@ -74,5 +99,15 @@
 		height: 20rpx;
 		float: right;
 		margin-right: 20rpx;
+	}
+	.logout-btn {
+		color: #29B581;
+		padding-top: 40rpx;
+		padding-bottom: 40rpx;
+		font-weight: bold;
+		background-color: #ffffff;
+	}
+	.logout-btn::after {
+		border: none;
 	}
 </style>

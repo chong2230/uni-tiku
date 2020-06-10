@@ -1,1 +1,0 @@
-<view class="content"><scroll-view class="scroll-view"><text class="type">{{info.type}}</text></scroll-view></view>

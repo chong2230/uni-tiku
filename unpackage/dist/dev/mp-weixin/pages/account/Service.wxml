@@ -1,1 +1,0 @@
-<view class="content"><text class="title">有知学堂服务使用协议</text><rich-text class="html-style" nodes="{{getContent}}"></rich-text></view>

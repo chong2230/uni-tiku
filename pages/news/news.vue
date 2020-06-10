@@ -58,7 +58,7 @@
 				console.log('onItemClick ', data);
 				setTimeout(()=>{
 					uni.navigateTo({
-						url: '/pages/news/NewsDetail?id='+data.id+'&type='+data.type,
+						url: '/pages/news/newsDetail?id='+data.id+'&type='+data.type,
 						success() {
 							console.log('success');
 						},

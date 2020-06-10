@@ -2,8 +2,11 @@
 	<view class="content">
 		<image class="user-img" :src="headerUrl"></image>
 		<view class="user" @click="goLogin" :hover-class="!login ? 'logo-hover' : ''">			
-			<view class="user-title">
-				<text class="uer-name">Hi，{{login ? uerInfo.name : '您未登录'}}</text>
+			<image class="avatarIcon" src="/static/images/defaultAvatar.jpg" v-if="info.avatarImage == undefined"></image>
+			<image class="avatarIcon" :src="getAvatarIcon" v-else></image>
+			<view class="avatarInfo">
+				<text class="name">{{login ? info.nickName : '您未登录'}}</text>
+				<text class="phone">{{info.phone || '点击头像登录'}}</text>
 			</view>
 		</view>
 		<view class="center-list">
@@ -32,11 +35,11 @@
 			</view>
 		</view>
 		<view class="center-list">
-			<view class="center-list-item border-bottom" @click="goAbout">
+			<!-- <view class="center-list-item border-bottom" @click="goAbout">
 				<image class="icon" src="/static/images/account/message.png"></image>
 				<text class="list-text">在线咨询</text>
 				<image class="right-arrow" src="/static/images/icon/right-arrow.png"></image>
-			</view>
+			</view> -->
 			<view class="center-list-item" @click="goSetting">
 				<image class="icon" src="/static/images/account/set.png"></image>
 				<text class="list-text">设置</text>
@@ -47,6 +50,8 @@
 </template>
 
 <script>
+	import api from '@/common/api.js'
+	import { Config } from '@/config/config.js'
 	import displayItem from '@/components/display-item.vue';
 	export default {
 		components: { displayItem },
@@ -54,14 +59,55 @@
 			return {
 				login: false,
 				headerUrl: '/static/images/account/person-bg.jpg',
-				uerInfo: {}
+				info: {},
+				member: null
+			}
+		},
+		onLoad(e) {
+			if (getApp().globalData.token) this.login = true;
+			else this.login = false;
+			this.load();
+		},
+		computed: {
+			getAvatarIcon() {
+				return Config.baseUrl + this.info.avatarImage;
 			}
 		},
 		methods: {
+			load() {
+				this.getAccount();
+				this.getUserMember();
+			},
+			getAccount() {
+				api.getAccount().then((result)=>{
+					if (result.code == 0) {
+						console.log('getUserInfo ', result);
+						let data = result.data;
+						let phone = '';
+						if (data.phone) {
+							phone = data.phone.substr(0, 3) + '****' + data.phone.substr(data.phone.length-4, 4);
+						} else {
+							phone = ' ';
+						}
+						data.phone = phone;
+						this.info = data;
+					}
+				})
+			},
+			getUserMember() {
+				api.getUserMember({
+					courseId: getApp().globalData.courseId
+				}).then((result)=>{
+					console.log('getUserMember ', result);
+					if (result.code == 0) {
+						if (result.data) this.member = result.data;
+					}
+				});
+			},
 			goLogin() {
 				if (!this.login) {
 					uni.navigateTo({
-						url: '/pages/account/Login'
+						url: '/pages/account/login'
 					});
 				}
 			},
@@ -76,7 +122,7 @@
 			
 			goSetting() {
 				uni.navigateTo({
-					url: '/pages/account/Setting'
+					url: '/pages/account/setting'
 				});
 			},
 			onPress(type) {
@@ -93,7 +139,7 @@
 					case 8:
 						uni.showToast({
 							title: '程序小哥正在快马加鞭，敬请期待噢~',
-							duration: 2000
+							icon: 'none'
 						});
 						break;
 					case 5:	// 笔记
@@ -119,12 +165,40 @@
 	}
 	.user {
 		background-color: #ffffff;
-		padding-top: 30rpx;
-		padding-bottom: 30rpx;
 		padding-left: 20rpx;
+		display: flex;
+		flex-direction: row;
+		/* justify-content: flex-start; */
+		align-items: center;
+		height: 160rpx;
+	}
+	.avatarIcon {
+		width: 100rpx;
+		height: 100rpx;        
+		border-radius: 50rpx;
+		align-self: center;
+		left: 20rpx;
+		object-fit: cover;
+	}
+	.avatarInfo {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin-left: 20rpx;
+	}
+	.name {
+		font-weight: bold; 
+		font-size: 30rpx;
+	}
+	.phone {
+		color: #828282;
+		font-size: 26rpx; 
+		top: 10rpx;
 	}
 	.user-img {
-		height: 200rpx;
+		width: 100%;
+		height: 300rpx;
 	}
 	.center-list {
 		margin-top: 10rpx;

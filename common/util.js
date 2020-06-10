@@ -127,3 +127,14 @@ export function getLength(str) {
     return Math.ceil(count);
 }
 
+// 将对象转换为参数
+export function parseObj(obj) {
+	if (Object.prototype.toString.call(obj) !== '[object Object]') return '';
+	var str = '';
+	for (var key in obj) {
+		let val = obj[key];
+		str += key + '=' + val + '&';
+	}
+	return str.substr(0, str.length-1);
+}
+

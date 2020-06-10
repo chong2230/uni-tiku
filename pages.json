@@ -1,84 +1,119 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/home/Home",
+			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path": "pages/news/News",
+			"path": "pages/news/news",
 			"style": {
 				"navigationBarTitleText": "资讯"
 			}
 		},
 		{
-			"path": "pages/account/Account",
+			"path": "pages/account/account",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
 		},
 		{
-            "path" : "pages/news/NewsDetail",
+            "path" : "pages/news/newsDetail",
             "style" : {
 				"navigationBarTitleText": ""
 			}
         }
         ,{
-            "path" : "pages/home/Category",
+            "path" : "pages/index/category",
             "style" : {
-				"navigationBarTitleText": "切换专业"
+				"navigationBarTitleText": "切换专业",
+				"app-plus": {
+					"titleNView": {
+						"autoBackButton": false						
+					}
+				}
 			}
         }
         ,{
-            "path" : "pages/account/Login",
+            "path" : "pages/account/login",
             "style" : {
 				"navigationBarTitleText": "登录"
 			}
         }
         ,{
-            "path" : "pages/account/Regist",
+            "path" : "pages/account/regist",
             "style" : {
 				"navigationBarTitleText": "注册"
 			}
         }
         ,{
-            "path" : "pages/account/Setting",
+            "path" : "pages/account/setting",
             "style" : {
 				"navigationBarTitleText": "设置"
 			}
         }
         ,{
-            "path" : "pages/home/Subject",
+            "path" : "pages/index/subject",
             "style" : {}
         }
         ,{
-            "path" : "pages/home/Timu",
+            "path" : "pages/index/timu",
             "style" : {}
         }
         ,{
-            "path" : "pages/home/Statistics",
+            "path" : "pages/index/statistics",
             "style" : {
 				"navigationBarTitleText":"学习评估"
 			}
         }
         ,{
-            "path" : "pages/account/About",
+            "path" : "pages/account/about",
             "style" : {
 				"navigationBarTitleText":"关于我们"
 			}
         }
         ,{
-            "path" : "pages/account/Service",
+            "path" : "pages/account/service",
             "style" : {
 				"navigationBarTitleText":"用户协议"
 			}
         }
         ,{
-            "path" : "pages/account/Contact",
+            "path" : "pages/account/contact",
             "style" : {
 				"navigationBarTitleText":"联系我们"
 			}
+        }
+        ,{
+            "path" : "pages/index/exam",
+            "style" : {
+				"navigationBarTitleText":"切换科目"
+			}
+        }
+        ,{
+            "path" : "pages/index/mycollect",
+            "style" : {
+				"navigationBarTitleText":"试题收藏"
+			}
+        }
+        ,{
+            "path" : "pages/index/myrecord",
+            "style" : {
+				"navigationBarTitleText":"做题记录"
+			}
+        }
+        ,{
+            "path" : "pages/index/singletimu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/donetimu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/wrongtimu",
+            "style" : {}
         }
     ],
 	"window": {
@@ -100,19 +135,19 @@
 		"list": [{
         "selectedIconPath": "static/images/home/home-selected.png",
         "iconPath": "static/images/home/home.png",
-        "pagePath": "pages/home/Home",
+        "pagePath": "pages/index/index",
         "text": "题库"
       },
       {
         "selectedIconPath": "static/images/home/news-selected.png",
         "iconPath": "static/images/home/news.png",
-        "pagePath": "pages/news/News",
+        "pagePath": "pages/news/news",
         "text": "资讯"
       },
       {
         "selectedIconPath": "static/images/home/my-selected.png",
         "iconPath": "static/images/home/my.png",
-        "pagePath": "pages/account/Account",
+        "pagePath": "pages/account/account",
         "text": "我的"
       }
 		]
