@@ -5,7 +5,7 @@
 		</view>
 		<uni-list class="list">
 		    <uni-list-item v-for="(item, index) in data" title=" " :show-arrow="true" class="item"
-					@click="onItemClick(item)">
+					@click="onItemClick(item)" :key="index">
 				<text>{{item.name}}</text>
 				<text>{{item.publisher}}    {{item.publishTime}}</text>
 			</uni-list-item>		   

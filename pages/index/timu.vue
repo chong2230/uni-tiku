@@ -7,7 +7,7 @@
 			</view>
 			<text v-if="info.name" class="title">{{curIndex + '. ' + getName}}</text>
 			<view v-if="info.type == '填空题'">
-				<view v-for="(item, index) in info.choices" key="info.id+'_fillblank_'+index">
+				<view v-for="(item, index) in info.choices" :key="index">
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(index)+1}}</text>
 					<view v-if="askList[index].ask" class="html-style" v-html="getAskContent(index)"></view>
 					<input placeholder="请输入您的答案" />
@@ -15,18 +15,18 @@
 			</view>
 			<view class="question" v-else-if="info.type == '简答题' || info.type == '计算分析题' 
 					|| info.type == '计算题' || info.type == '综合题' || info.type == '案例题'">
-				<view v-for="(item, index) in info.choices" key="info.id+'_shortanswer_'+index">	
+				<view v-for="(item, index) in info.choices" :key="index">	
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(index)+1}}</text>
 					<view v-if="askList[index].ask" class="html-style" v-html="getAskContent(index)"></view>
 				</view>
 			</view>
 			<view v-else>
-				<view v-for="(choice, i) in info.choices">
+				<view v-for="(choice, i) in info.choices" :key="i">
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(i)+1}}</text>
 					<view v-if="askList[i].ask" class="html-style" v-html="getAskContent(i)"></view>
-					<view v-for="(obj, key) of choice" @click="choose(key, i)">
+					<view v-for="(obj, key) in choice" @click="choose(key, i)" :key="key">
 						<view v-if="key">
-							<text class="choiceText" :class="getSelectStyle">{{getChoiceText(choice, key)}}</text>
+							<text :class="[currentAnswers[i] && currentAnswers[i].indexOf(key) != -1 ? 'selectChoiceText' : 'choiceText']">{{getChoiceText(choice, key)}}</text>
 						</view>
 					</view>
 				</view>
@@ -34,7 +34,7 @@
 			<view v-if="showAnalyse[curIndex-1]" class="analyse-view">
 				<view class="analyse-tip">答案与解析</view>
 				<text class="analyse-answer">参考答案：{{getAnswers}}</Text>
-				<view v-for="(item, index) in info.analysis" :key="'analysis-'+index">
+				<view v-for="(item, index) in info.analysis" :key="index">
 					<text class="analyse-content">{{item.replace(/^\d*\./, '')}}</text>
 				</view>
 			</view>
@@ -46,18 +46,28 @@
 			<button class="button" :class="getNextCls" @click="getNext">下一题</button>
 			<button class="button" @click="getScantron">{{getCurrentTotalLabel}}</button>
 		</view>
+		<view class="overlay" v-if="showModal" @click="hideModal"></view>
+		<timu-card class="timu-card" v-if="showCardModal" :curIndex="curIndex-1"
+			:list="newlist" :isAnalyse="isAnalyse"
+			@choose="chooseTimu" :handlePaper="handlePaper"></timu-card>
 	</view>
 </template>
 
 <script>
 	import api from '@/common/api.js'
 	import { Config } from '@/config/config.js'
+	import TimuCard from './timucard.vue';
 	export default {
+		components: {
+			TimuCard
+		},
 		data() {
 			return {
 				curIndex: 1,
 				total: 10,
 				list: [],
+				newlist: [],// 将list按一行显示count个数转换
+				count: 6, 	// 答题卡一行显示题数
 				info: {},
 				paperId: '',
 				type: '',
@@ -127,17 +137,21 @@
 					type: this.type,
 					doModel: this.doModel || 1
 				}
-				console.log(params);
 				api.getTimuList(params).then((result)=>{
-					console.log('getTimuList ', result);
 					if (result.code == 0) {
 						let list = [];
+						let index = 0;
 						// 和答题卡接口数据统一
 						for (let i=0; i<result.data.length; i++) {
 							let d = {
 								id: result.data[i]
 							}
 							list.push(d);
+							// 存储到newlist中
+							if (i > 0 && i % this.count == 0) index++;
+							d.index = i;
+							this.newlist[index] = this.newlist[index] || [];
+							this.newlist[index].push(d);
 						} 
 						let showAnalyse = [];
 						if (this.isAnalyse) {
@@ -203,7 +217,6 @@
 								// if (result.data.askList.length == 1) info.question = ask.question || '';
 							}
 							info = Object.assign({}, result.data, info);
-							// console.log('info ', info);
 							this.curIndex = index || 1;	// 不传则默认为1
 							this.info = info;
 							this.askList = result.data.askList;							
@@ -251,9 +264,6 @@
 				}
 				return '';
 			},
-			getSelectStyle(key, i) {
-				return this.currentAnswers[i] && this.currentAnswers[i].indexOf(key) != -1 ? 'selectChoiceText' : '';
-			},
 			// doModel: 1 练习模式 2 考试模式
 			// 考试模式时历年真题、模拟试卷不能查看解析
 			getAnalyse() {
@@ -264,9 +274,10 @@
 					});
 					return;
 				}
-				let showAnalyse = this.showAnalyse;
-				showAnalyse[this.curIndex - 1] = !showAnalyse[this.curIndex - 1];
-				this.showAnalyse = showAnalyse;
+				// let showAnalyse = this.showAnalyse;
+				// showAnalyse[this.curIndex - 1] = !showAnalyse[this.curIndex - 1];
+				// this.showAnalyse = showAnalyse;
+				this.$set(this.showAnalyse, this.curIndex - 1, !this.showAnalyse[this.curIndex - 1]);
 			},
 			collect() {				
 				let self = this;
@@ -281,6 +292,7 @@
 				api.collectTimu(params).then((result) => {
 					if (result.code == 0) {
 						info.collected = !info.collected;
+						this.$set(this.info, 'collected', info.collected);
 						self.info = info;
 					} else if (result.code == 2) {
 						self.goLogin();
@@ -338,6 +350,7 @@
 				if (this.info.type == '单选题' || this.info.type == '单项选择题'
 					|| this.info.type == '判断题') {
 					currentAnswers[index] = key;
+					this.$set(this.currentAnswers, index, key);
 				} else {
 					// 多选题或不定项选择题，如果用户已经选取，则取消；否则进行选取操作
 					let answers = currentAnswers[index];
@@ -354,9 +367,9 @@
 						answers.push(key);
 					}
 					currentAnswers[index] = answers.join('');
+					this.$set(this.currentAnswers, index, answers.join(''));
 				}
-				// console.log(currentAnswers);
-				this.currentAnswers = currentAnswers,
+				this.currentAnswers = currentAnswers;
 				this.saveTimu();
 			},
 			saveTimu() {
@@ -437,7 +450,11 @@
 				return this.currentAnswers;
 			},
 			showCard() {
-				
+				this.showModal = true;
+				this.showCardModal = true;
+			},
+			hideModal() {
+				this.showModal = false;
 			},
 			getScantron() {
 				if (this.isFetchScantron) {
@@ -462,9 +479,41 @@
 						});
 					}
 			},
+			chooseTimu(index) {
+				let id = this.list[index-1].id;
+				this.getTimu(id, index);
+				this.showModal = false;
+				this.showCardModal = false;
+			},
+			handlePaper() {
+				let info = this.info;
+				let params = {
+					professionId: info.professionId,
+					courseId: info.courseId,
+					paperId: info.paperId,
+					questionId: info.id,
+					useTime: 5	// TODO: use real data
+				};
+				api.handlePaper(params).then((result)=>{
+					if (result.code == 0) {
+						uni.navigateTo({
+							url: '/pages/index/report?paperId=' + info.paperId
+						})
+					} else if (result.code == 2) {
+						this.goLogin();
+					} else {
+						uni.showToast({
+							title: result.msg,
+							icon: 'none'
+						})
+					}
+				})
+				this.showModal = false;
+				this.showCardModal = false;
+			},
 			goLogin() {
 				uni.navigateTo({
-					url: '/pages/account/Login'
+					url: '/pages/account/login'
 				});
 			}
 		}
@@ -573,5 +622,26 @@
 	.recorrect-button {
 		margin: 40rpx;
 		color: #999999;
+	}
+	.overlay {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		background-color: #000000;
+		opacity: 0.5;
+	}
+	.timu-card {
+		position: absolute;
+		width: 100%;
+		height: 824rpx;
+		left: 0;
+		bottom: 0;
+		background-color: #ffffff;
+		z-index: 10;
+	}
+	.selectChoiceText {
+		color: #29B581;
 	}
 </style>

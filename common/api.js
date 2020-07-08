@@ -132,5 +132,10 @@ api.findPassword = (params) => http.get('/user/findPassword', params);
  * 设置密码
  */
 api.setPassword = (params) => http.get('/user/resetPassword', params);
+/**
+ * 通过发送邮件找回密码
+ */
+api.sendEmail = (params) => http.get('/user/findPassword', params);
+
 
 export default api

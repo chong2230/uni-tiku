@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<scroll-view>
-			<view class="item" v-for="(item, index) in listData" @click="onItemClick(item)">
+			<view class="item" v-for="(item, index) in listData" @click="onItemClick(item)" :key="item.id">
 				<view class="type">{{item.type}}</view>
 				<view class="title">{{item.askList && item.askList.length > 0 ? item.askList[0].ask.replace(/^\d*\./, '') : ''}}</view>
 			</view>

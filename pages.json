@@ -23,8 +23,8 @@
             "style" : {
 				"navigationBarTitleText": ""
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/index/category",
             "style" : {
 				"navigationBarTitleText": "切换专业",
@@ -34,85 +34,99 @@
 					}
 				}
 			}
-        }
-        ,{
+        },
+        {
             "path" : "pages/account/login",
             "style" : {
 				"navigationBarTitleText": "登录"
 			}
-        }
-        ,{
+        },
+        {
             "path" : "pages/account/regist",
             "style" : {
 				"navigationBarTitleText": "注册"
 			}
-        }
-        ,{
+        },
+        {
             "path" : "pages/account/setting",
             "style" : {
 				"navigationBarTitleText": "设置"
 			}
-        }
-        ,{
+        },
+        {
             "path" : "pages/index/subject",
             "style" : {}
-        }
-        ,{
+        },
+        {
             "path" : "pages/index/timu",
             "style" : {}
-        }
-        ,{
+        },
+        {
             "path" : "pages/index/statistics",
             "style" : {
 				"navigationBarTitleText":"学习评估"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/account/about",
             "style" : {
 				"navigationBarTitleText":"关于我们"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/account/service",
             "style" : {
 				"navigationBarTitleText":"用户协议"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/account/contact",
             "style" : {
 				"navigationBarTitleText":"联系我们"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/index/exam",
             "style" : {
 				"navigationBarTitleText":"切换科目"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/index/mycollect",
             "style" : {
 				"navigationBarTitleText":"试题收藏"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/index/myrecord",
             "style" : {
 				"navigationBarTitleText":"做题记录"
 			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/index/singletimu",
-            "style" : {}
-        }
-        ,{
+            "style" : {
+				"navigationBarTitleText":""
+			}
+        },
+		{
             "path" : "pages/index/donetimu",
             "style" : {}
-        }
-        ,{
+        },
+		{
             "path" : "pages/index/wrongtimu",
+            "style" : {}
+        },
+		{
+            "path" : "pages/account/forgetpwd",
+            "style" : {}
+        },
+		{
+            "path" : "pages/account/setpwd",
+            "style" : {}
+        },
+		{
+            "path" : "pages/index/report",
             "style" : {}
         }
     ],

@@ -35,7 +35,6 @@ http.request = (url, data, method, power) => {
 	data.plt = 'miniprogram';
 	data.dt = new Date().getTime();
 	let ver = Config.version;
-	console.log('ver=', ver);
 	data.ver = ver;
 	data.innerVer = 100000 + parseInt(ver.replace(/\./g, ''));
     return uni.request({

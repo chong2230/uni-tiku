@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<display-item v-for="(value, key, index) in data" class="item"
-			:txt1="key" :txt3="value" :showRight="false"
+			:txt1="key" :txt3="value" :showRight="false" :key="index"
 		></display-item>
 	
 	</view>

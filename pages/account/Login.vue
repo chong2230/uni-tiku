@@ -60,9 +60,9 @@
 						}  
 						let pages = getCurrentPages();
 						let prevPage = pages[pages.length - 2];
-						prevPage.onLoad();
+						prevPage.data.load();
 						uni.showToast({
-							title: result.msg,
+							title: '登录成功',
 							icon: "none",
 							success: () => {
 								setTimeout(()=>{

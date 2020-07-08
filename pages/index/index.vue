@@ -15,7 +15,7 @@
 		<view class="hot-view">
 			<view class="hot-item" v-for="(item, index) in hotData" :key="item.id">
 				<view class="icon-bg" :class="index%2==0 ? '' : 'icon-bg2'" @click="getHotContent(item)">
-					<image class="icon" src="/static/flash.png"></image>
+					<image class="icon" :src="iconBgs[index]"></image>
 				</view>
 				<text class="name">{{item.name}}</text>				
 			</view>
@@ -26,14 +26,11 @@
 		<view class="hot-view">
 			<view class="hot-item" v-for="(item, index) in myData.contents" :key="item.id">
 				<view class="icon-bg" :class="index%2==0 ? '' : 'icon-bg2'" @click="getMineContent(item)">
-					<image class="icon" :src="iconBgs[index]"></image>
+					<image class="icon" :src="myIcons[index]"></image>
 				</view>
 				<text class="name">{{item.name}}</text>				
 			</view>
 		</view>
-		<!-- <view v-for="(obj, i) in todo  ">
-			<text>{{i + ': ' + obj.text}}</text>
-		</view> -->
 	</view>
 </template>
 
@@ -46,8 +43,9 @@
 			return {
 				title: '首页',
 				background: ['color1', 'color2', 'color3'],
-				iconBgs: ['/static/flash.png', '/static/ios-folder-outline.png', '/static/flash.png',
-					'/static/flash.png', '/static/flash.png', '/static/flash.png'],
+				iconBgs: ['/static/flash.png', '/static/ios-folder-outline.png', '/static/paper.png',
+					'/static/today.png', '/static/icon-bulb.png', '/static/ios-ribbon.png'],
+				myIcons: ['/static/heart.png', '/static/ios-list-box.png', '/static/bug.png', '/static/book.png'],
 				indicatorDots: true,
 				autoplay: true,
 				interval: 2000,
@@ -55,12 +53,7 @@
 				dataSource: null,
 				hotData: [],
 				myData: {},
-				curCourse: {},
-				todo: [
-					{text:1,ok:true},
-					{text:2,ok:false},
-					{text:3,ok:true},   
-				]
+				curCourse: {}
 			}
 		},
 		onLoad() {
@@ -79,6 +72,7 @@
 					if (course) {
 						course = JSON.parse(course);
 						this.curCourse = course;
+						console.log('this.curCourse=', course);
 						getApp().globalData.course = course;
 						getApp().globalData.professionId = course.professionId;
 						getApp().globalData.courseId = course.courseId || course.id;

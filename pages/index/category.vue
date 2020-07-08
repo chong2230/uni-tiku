@@ -9,6 +9,7 @@
 						<view class="contents">
 							<button v-for="cont in val.courses" class="btn" @click="choose(cont)" :key="cont.id">{{cont.name}}</button>
 						</view>
+						<view class="space"></view>
 					</view>
 				</view>
 			</view>
@@ -56,7 +57,6 @@
 				api.getCategoryList(params).then((result)=>{
 					if (result.code == 0) {
 						this.sourceData = result.data;
-						console.log('sourceData ', this.sourceData);
 						uni.setStorage({
 							key: '/profession/list',
 							data: JSON.stringify(result.data)
@@ -77,7 +77,7 @@
 					this.chooseObj[data.id] = data;
 					this.$set(this.chooseObj, data.id, data);
 				}
-				console.log('chooseObj ', this.chooseObj);
+				console.log('onItemClick chooseObj ', this.chooseObj);
 				this.$set(this.params, 'isShow', !this.params.isShow);
 			},
 			choose(data) {
@@ -110,9 +110,9 @@
 			chooseExam() {				
 				let course = this.chooseData;
 				let params = { 
-					functionId: course.functionId,
+					professionId: course.professionId,
 					category: course.category,
-					course: course,
+					// course: course,
 					courseId: course.id,
 					from: 'category'
 				};
@@ -162,7 +162,7 @@
 	.title {
 		font-size: 32rpx;
 		color: #333333;
-		margin-left: 60rpx;
+		margin-left: 30rpx;
 		width: 100%;
 		height: 108rpx;
 		line-height: 108rpx;
@@ -183,9 +183,9 @@
 		flex-direction: column;
 		width: 100%;
 		height: 180rpx;
-		border-top-color: '#ececed';
+		/* border-top-color: '#f8f8f8';
 		border-top-width: 0.5rpx;
-		border-top-style: solid;
+		border-top-style: solid; */
 	}
 	.single-item .subItem {
 		height: 90rpx;
@@ -208,6 +208,7 @@
 		/* flex-wrap: wrap; */
 		justify-content: space-between;
 		align-items: center;
+		padding-bottom: 20rpx ;
 		width: 100%;
 	}
 	.btn {
@@ -223,5 +224,10 @@
 		border-style: solid;
 		font-size: 26rpx;
 		text-align: center;
+	}
+	.space {
+		width: 100%;
+		height: 10rpx;
+		background-color: #f8f8f8;
 	}
 </style>
