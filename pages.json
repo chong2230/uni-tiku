@@ -127,7 +127,9 @@
         },
 		{
             "path" : "pages/index/report",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"评估报告"
+			}
         }
     ],
 	"window": {

@@ -57,7 +57,6 @@
 			}
 		},
 		onLoad() {
-			// console.log(Config.baseUrl);
 			this.initData();
 			this.load();
 		},

@@ -49,7 +49,7 @@
 		<view class="overlay" v-if="showModal" @click="hideModal"></view>
 		<timu-card class="timu-card" v-if="showCardModal" :curIndex="curIndex-1"
 			:list="newlist" :isAnalyse="isAnalyse"
-			@choose="chooseTimu" :handlePaper="handlePaper"></timu-card>
+			@choose="chooseTimu" @handlePaper="handlePaper"></timu-card>
 	</view>
 </template>
 
@@ -83,7 +83,8 @@
 				showMultiChoiceTip: false,	// 多选题提示
 				showUncertainChoiceTip: false,	// 不定项选择题提示
 				isFetchScantron: false,	// 是否已经获取了答题卡接口，新版接口出来后修改为false
-				hasChoosed: true
+				hasChoosed: true,
+				isAnalyse: false
 			}
 		},
 		onLoad(e) {
@@ -139,6 +140,7 @@
 				}
 				api.getTimuList(params).then((result)=>{
 					if (result.code == 0) {
+						console.log('getTimuList ', result.data);
 						let list = [];
 						let index = 0;
 						// 和答题卡接口数据统一
@@ -148,10 +150,10 @@
 							}
 							list.push(d);
 							// 存储到newlist中
-							if (i > 0 && i % this.count == 0) index++;
-							d.index = i;
-							this.newlist[index] = this.newlist[index] || [];
-							this.newlist[index].push(d);
+							// if (i > 0 && i % this.count == 0) index++;
+							// d.index = i;
+							// this.newlist[index] = this.newlist[index] || [];
+							// this.newlist[index].push(d);
 						} 
 						let showAnalyse = [];
 						if (this.isAnalyse) {
@@ -455,6 +457,7 @@
 			},
 			hideModal() {
 				this.showModal = false;
+				this.showCardModal = false;
 			},
 			getScantron() {
 				if (this.isFetchScantron) {
@@ -465,8 +468,17 @@
 						};
 						api.getScantron(params).then((result)=>{
 							if (result.code == 0) {
+								console.log('getScantron ', result.data);
 								this.isFetchScantron = true;
-								this.list = result .data;
+								this.list = result.data;
+								let index = 0;
+								this.list.forEach((item, i) => {							
+									// 存储到newlist中
+									if (i > 0 && i % this.count == 0) index++;
+									item.index = i;
+									this.newlist[index] = this.newlist[index] || [];
+									this.newlist[index].push(item);
+								})
 								this.showCard();
 							} else if (result.code == 2) {
 								this.goLogin();										
@@ -496,9 +508,15 @@
 				};
 				api.handlePaper(params).then((result)=>{
 					if (result.code == 0) {
-						uni.navigateTo({
-							url: '/pages/index/report?paperId=' + info.paperId
-						})
+						console.log('handlePaper ', result.data);
+						uni.redirectTo({
+							url: '/pages/index/report?paperId=' + info.paperId + '&info=' + JSON.stringify(result.data),
+							success: function() {
+								let pages = getCurrentPages();
+								let prevPage = pages[pages.length - 2];
+								prevPage.data.load();
+							}
+						})					
 					} else if (result.code == 2) {
 						this.goLogin();
 					} else {
@@ -551,8 +569,7 @@
 	.html-style {
 		flex: 1;
 		flex-direction: column;
-		margin-top: 20rpx;
-		margin-bottom: 20rpx;
+		margin-top: 20rpx 10rpx;
 		background-color: #FFFFFF;
 	}
 	.choice-text {

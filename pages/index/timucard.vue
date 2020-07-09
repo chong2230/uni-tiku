@@ -13,7 +13,7 @@
 			<view class="circle-btn current">当前</view>
 			<view class="circle-btn undo">未做</view>
 		</view>
-		<view class="bottom">
+		<view class="bottom" v-if="!isAnalyse">
 			<button class="handle-btn" @click="handlePaper">交卷</button>
 		</view>
 	</view>
@@ -40,13 +40,14 @@
 				default: []
 			},
 		},
+		mounted() {
+			console.log(this.list);
+		},
 		methods: {
 			getBtnCls(item, index) {
-				console.log('getBtnCls ', item, index)
 				return item.done ? 'done' : 'undo'
 			},
 			chooseTimu(index) {
-				console.log('chooseTimu ', index);
 				this.$emit('choose', index);
 			},
 			handlePaper() {
@@ -83,6 +84,7 @@
 		align-items: center;
 		width: 80rpx;
 		height: 80rpx;
+		font-size: 28rpx;
 		line-height: 80rpx;
 		text-align: center;
 		border-radius: 50rpx;

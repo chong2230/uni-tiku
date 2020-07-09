@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="list">
-		    <view v-for="(item, index) in data" class="item">
+		    <view v-for="(item, index) in data" class="item" :key="item.id">
 				<view class="top">
 					<text class="type">{{item.type}}</text>
 					<text class="title">{{item.name}}</text>
