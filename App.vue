@@ -10,6 +10,7 @@
 		}, 
 		onLaunch: function() {
 			console.log('App Launch')
+			if (typeof plus !== 'undefined') plus.screen.lockOrientation('portrait-primary'); //锁定			
 		},
 		onShow: function() {
 			console.log('App Show')

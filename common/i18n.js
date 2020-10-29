@@ -2,7 +2,7 @@ export default {
 	greeting: '你好!',
 	common: {
 		'name' : '有知学堂',
-		'company' : '有知（北京）有限公司',
+		'company' : '广西南宁有知教育科技有限公司',
 		'website' : 'www.youzhi.tech',
 
 	},

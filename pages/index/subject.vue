@@ -27,7 +27,6 @@
 	export default {
 		data() {
 			return {
-				headerImg: '',
 				from: '',	// 来源，试卷列表 or 已购买purchase
 				data: [],
 				member: { level: 0, passed: false },	// 会员信息
@@ -64,7 +63,7 @@
 				}
 				console.log('params: ', params);
 				if (this.from == 'purchase') params.from = this.from;
-				if (getApp().globalData.course.curriculums) {
+				if (!getApp().globalData.course.curriculums) {
 					let ids = [];
 					ids.push(getApp().globalData.course.id);
 					params.curriculumIds = ids.join(',');
@@ -73,7 +72,6 @@
 					console.log(result);
 					if (result.code == 0) {
 						this.data = result.data.list || result.data;
-						this.headerImg = result.data.headerImg;
 					}
 				});
 				api.getUserMember({
@@ -84,9 +82,6 @@
 						if (result.data) this.member = result.data;
 					}
 				});
-			},
-			getHeaderImg() {
-				return this.headerImg ? Config.baseUrl + this.headerImg : '/static/news-header.jpg';
 			},
 			getNeedBuy(item) {
 				return (this.member.level == 3 && this.member.passed)
@@ -188,24 +183,6 @@
 				    }
 				});
 			},
-			onItemClick(data) {
-				console.log('onItemClick ', data);
-				setTimeout(()=>{
-					uni.navigateTo({
-						url: '/pages/index/timu?id='+data.id+'&type='+data.type,
-						success() {
-							console.log('success');
-						},
-						fail() {
-							console.log('fail');
-						},
-						complete() {
-							console.log('complete');
-						}
-					});
-				}, 100);
-				
-			},
 			parseObj(obj) {
 				var str = '';
 				for (var key in obj) {
@@ -225,20 +202,6 @@
 		align-items: center;
 		justify-content: center;
 		background-color: #f8f8f8;
-	}
-	.header {
-		width: 100%;
-		height: 300rpx;
-	}
-	/* .swiper-item {
-		display: block;
-		height: 300rpx;
-		line-height: 300rpx;
-		text-align: center;
-	} */
-	.header-img {
-		width: 100%;
-		height: 300rpx;
 	}
 	.list {
 		width: 100%;

@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:////Users/cluo/repo/uni-tiku/main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA,wCAAmB;AACnB;AACA,mF;AACAA,UAAU,CAACC,WAAD,CAAV,C","file":"pages/my/my.js","sourcesContent":["import 'uni-pages';import '@dcloudio/uni-stat';\nimport Vue from 'vue'\nimport Page from './pages/my/my.vue'\ncreatePage(Page)"],"sourceRoot":""}

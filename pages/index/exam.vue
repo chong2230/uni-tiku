@@ -55,33 +55,17 @@
 				})
 			},
 			isChoosed(data) {
-				// console.log('this.chooseObj["" + data.id]', this.chooseObj["" + data.id]);
-				// console.log('data.courseCategory ', data.courseCategory)
 				return this.chooseObj["" + data.id] && data.courseCategory;
 			},
-			// onItemClick(data) {
-			// 	if (this.chooseObj[data.id]) {
-			// 		this.chooseObj[data.id] = null;
-			// 		this.$set(this.chooseObj, data.id, null);
-			// 	} else {
-			// 		this.chooseObj[data.id] = data;
-			// 		this.$set(this.chooseObj, data.id, data);
-			// 	}
-			// 	console.log('chooseObj ', this.chooseObj);
-			// 	this.$set(this.params, 'isShow', !this.params.isShow);
-			// },
 			choose(data) {
 				let self = this;
 				this.chooseData = data;
 				this.syncData();
 				let pages = getCurrentPages();
-				console.log('pages ', pages)
 				let index = this.from == 'category' ? pages.length - 3 : pages.length - 2;
-				console.log('index=', index)
 				let prevPage = pages[index];
-				console.log('prevPage ', prevPage);
-				// prevPage.$vm.load();
-				prevPage.onLoad();
+				prevPage.$vm.initData();
+				prevPage.$vm.load();
 				uni.navigateBack({
 					delta: this.from == 'category' ? 2 : 1
 				});

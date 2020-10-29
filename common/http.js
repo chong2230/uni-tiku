@@ -44,7 +44,7 @@ http.request = (url, data, method, power) => {
         dataType: 'json',
         header: headers
     }).then(res => {
-		// console.log(res);
+		// console.log(data, res);
         if (res[1].statusCode == 200) {
             return res[1].data
         } else {

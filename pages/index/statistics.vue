@@ -30,20 +30,10 @@
 					courseId: getApp().globalData.courseId
 				}
 				api.getStatistics(params).then((result)=>{
-					console.log(result);
 					if (result.code == 0) {
 						this.data = result.data;
 					}
 				});
-			},
-			onItemClick(data) {
-				console.log('onItemClick ', data);
-				setTimeout(()=>{
-					uni.navigateTo({
-						url: '/pages/news/newsDetail?id='+data.id+'&type='+data.type,
-					});
-				}, 10);
-				
 			}
 		}
 	}

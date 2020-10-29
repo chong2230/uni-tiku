@@ -3,15 +3,16 @@
 		<scroll-view class="scroll-view">
 			<view class="item" v-for="(item, index) in sourceData" :key="item.id" @click="onItemClick(item)">
 				<view class="title">{{item.name}}</view>
-				<view v-if="params.isShow" :class="item.courseCategory.length > 1 ? 'multi-item' : 'single-item'">
+				<view v-if="chooseObj[item.id]" :class="item.courseCategory.length > 1 ? 'multi-item' : 'single-item'">
 					<view class="subItem" v-for="(val, key, i) in item.courseCategory" :key="val.name">
 						<view class="subName" v-if="item.courseCategory.length > 1">{{val.name}}</view>
 						<view class="contents">
 							<button v-for="cont in val.courses" class="btn" @click="choose(cont)" :key="cont.id">{{cont.name}}</button>
 						</view>
-						<view class="space"></view>
+						<view class="line"></view>
 					</view>
 				</view>
+				<view v-if="index !== sourceData.length - 1" class="seperate"></view>
 			</view>
 		</scroll-view>
 	</view>
@@ -27,8 +28,8 @@
 				refreshing: false,
 				flatHeight: 0,
 				indexText: '',
-				chooseObj: {},
-				chooseData: {},
+				chooseObj: {},	// 记录科目是否选中
+				chooseData: {},	// 选择的科目信息
 				params: {
 					isShow: false
 				}
@@ -57,6 +58,7 @@
 				api.getCategoryList(params).then((result)=>{
 					if (result.code == 0) {
 						this.sourceData = result.data;
+						console.log(this.sourceData);
 						uni.setStorage({
 							key: '/profession/list',
 							data: JSON.stringify(result.data)
@@ -65,8 +67,6 @@
 				})
 			},
 			isChoosed(data) {
-				// console.log('this.chooseObj["" + data.id]', this.chooseObj["" + data.id]);
-				// console.log('data.courseCategory ', data.courseCategory)
 				return this.chooseObj["" + data.id] && data.courseCategory;
 			},
 			onItemClick(data) {
@@ -77,7 +77,6 @@
 					this.chooseObj[data.id] = data;
 					this.$set(this.chooseObj, data.id, data);
 				}
-				console.log('onItemClick chooseObj ', this.chooseObj);
 				this.$set(this.params, 'isShow', !this.params.isShow);
 			},
 			choose(data) {
@@ -124,9 +123,8 @@
 				this.syncData();
 				let pages = getCurrentPages();
 				let prevPage = pages[pages.length - 2];
-				console.log(prevPage);
-				// prevPage.$vm.load();
-				prevPage.onLoad();
+				prevPage.$vm.initData();
+				prevPage.$vm.load();
 				uni.navigateBack();
 			},
 			syncData() {
@@ -143,21 +141,14 @@
 
 <style>
 	.content {
-		/* flex: 1; */
-		background-color: '#f8f8f8';
+		flex: 1;
+		background-color: #FFFFFF;
 	}
 	.scroll-view {
-		/* flex: 1;
-		display: flex;
-		flex-direction: column;	 */	
+		flex: 1;
 	}
 	.item {
-		/* display: flex;
-		flex-direction: column;
-		align-items: center; */
-		/* border-color: #e6e6e6;
-		border-bottom-width: 2rpx;
-		border-style: solid; */
+		margin-top: 20rpx;
 	}
 	.title {
 		font-size: 32rpx;
@@ -178,17 +169,15 @@
 		line-height: 108rpx;
 		text-align: left;
 	}
+	.single-item, .multi-item {
+		border-top-color: #f8f8f8;
+		border-top-width: 2rpx;
+		border-top-style: solid;
+	}
 	.subItem {
-		display: flex;
-		flex-direction: column;
 		width: 100%;
-		height: 180rpx;
-		/* border-top-color: '#f8f8f8';
-		border-top-width: 0.5rpx;
-		border-top-style: solid; */
 	}
 	.single-item .subItem {
-		height: 90rpx;
 		padding-top: 20rpx;
 	}
 	.subItem::after {
@@ -205,29 +194,34 @@
 	.contents {
 		display: flex;
 		flex-direction: row;
-		/* flex-wrap: wrap; */
+		flex-wrap: wrap;
 		justify-content: space-between;
 		align-items: center;
 		padding-bottom: 20rpx ;
 		width: 100%;
 	}
 	.btn {
-		/* width: calc(calc(100% / 3) - 60rpx);
+		width: calc(calc(100% / 2) - 60rpx);
 		height: 60rpx;
-		margin-left: 20rpx;
-		margin-bottom: 20rpx; */
-		padding-left: 60rpx;
-		padding-right: 60rpx;
+		line-height: 60rpx;
+		margin: 20rpx 30rpx;
+		padding: 0 20rpx;
 		border-color: #999999;
 		border-width: 2rpx;
 		border-radius: 20rpx;
 		border-style: solid;
 		font-size: 26rpx;
 		text-align: center;
+		background-color: #FFFFFF;
 	}
-	.space {
+	.line {
 		width: 100%;
-		height: 10rpx;
+		height: 4rpx;
+		background-color: #f8f8f8;
+	}
+	.seperate {
+		width: 100%;
+		height: 20rpx;
 		background-color: #f8f8f8;
 	}
 </style>

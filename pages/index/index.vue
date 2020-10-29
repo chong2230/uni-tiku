@@ -71,7 +71,6 @@
 					if (course) {
 						course = JSON.parse(course);
 						this.curCourse = course;
-						console.log('this.curCourse=', course);
 						getApp().globalData.course = course;
 						getApp().globalData.professionId = course.professionId;
 						getApp().globalData.courseId = course.courseId || course.id;
@@ -90,19 +89,16 @@
 					courseId: getApp().globalData.courseId
 				};
 				api.getBanners(params).then((result)=>{
-					// console.log(result);
 					if (result.code == 0) {
 						this.dataSource = result.data;
 					}
 				})
 				api.getHomeFunc(params).then((result)=>{
-					// console.log(result);
 					if (result.code == 0) {
 						this.hotData = result.data;
 					}
 				})
 				api.getHomeMy(params).then((result)=>{
-					// console.log(result);
 					if (result.code == 0) {
 						this.myData = result.data;
 					}
@@ -131,7 +127,6 @@
 				}, 10);
 			},
 			getMineContent(data) {
-				// console.log(getApp().globalData.token);
 				if (getApp().globalData.token == null) {
 					this.goLogin();
 					return;
@@ -229,16 +224,17 @@
 		background-color: #f8f8f8;
 	}
 	.header {
-		height: 88rpx;
+		height: 60rpx;
 		justify-content: center;
 		align-items: center;
+		padding-bottom: 20rpx;
 	}
 	.header-title {
 		font-size: 34rpx;
 		color: #333333;
 		font-weight: 400;
-		height: 88rpx;
-		line-height: 88rpx;
+		height: 60rpx;
+		line-height: 60rpx;
 		align-self: center;
 		text-align: center;
 	}
@@ -269,7 +265,6 @@
 	}
 	
 	.hot-item {
-		/* display: flex; */
 		flex-direction: column;
 		width: 33%;
 		height: 150rpx;
@@ -296,7 +291,6 @@
 	}
 	
 	.icon {
-		/* background-color: #41c364; */
 		width: 50rpx;
 		height: 50rpx;
 	}
