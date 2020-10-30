@@ -1,5 +1,5 @@
 <template>
-	<view class="item" @click="onClick">
+	<view class="item" :class="showBottomBorder ? 'border-bottom' : ''" @click="onClick">
 		<image class="icon" v-if="source != ''" :src="source"></image>
 		<text class="text1" v-if="txt1 != ''">{{txt1}}</text>
 		<!-- <text class="text2" v-if="txt2 != ''">{{txt2}}</text> -->
@@ -33,6 +33,10 @@
 				default: ''
 			},
 			showRight: {
+				type: Boolean,
+				default: true
+			},
+			showBottomBorder: {
 				type: Boolean,
 				default: true
 			},
@@ -71,6 +75,9 @@
 		line-height: 40rpx;
 		color: #828282;
 		font-size: 32rpx;
+	}
+	.border-bottom {
+		border-bottom: 1rpx solid #F1F2F1;
 	}
 	.right-arrow {
 		width: 20rpx;

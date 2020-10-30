@@ -15,7 +15,7 @@
 
 <script>
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import Config from '@/config/config.js'
 	export default {
 		data() {
 			return {
@@ -208,7 +208,7 @@
 	.tip {
 		font-size: 26rpx;
 		text-align: center;
-		/* margin-left: 40rpx; */
+		margin-left: 20rpx;
 	}
 	.service-btn {
 		color: #29B581;

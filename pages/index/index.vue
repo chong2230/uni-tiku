@@ -36,7 +36,8 @@
 
 <script>
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import MockData from '@/mockdata/mockdata.js'
+	import Config from '@/config/config.js'
 	import { parseObj } from '@/common/util.js'
 	export default {
 		data() {
@@ -90,7 +91,15 @@
 				};
 				api.getBanners(params).then((result)=>{
 					if (result.code == 0) {
-						this.dataSource = result.data;
+						let mockdata = MockData['/home/slide']['data'];
+						let list = result.data || [];
+						let len = list.length;
+						if (len < 3) {
+							for (let i=0; i<3-len; i++) {
+								list.push(mockdata[i]);
+							}
+						}
+						this.dataSource = list;
 					}
 				})
 				api.getHomeFunc(params).then((result)=>{

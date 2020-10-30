@@ -18,7 +18,7 @@
 	import uniList from "@/components/uni-list/uni-list.vue"
 	import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import Config from '@/config/config.js'
 	
 	export default {
 		components: {uniList,uniListItem},

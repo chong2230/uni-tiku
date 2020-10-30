@@ -51,6 +51,7 @@
 							try {
 							    uni.removeStorageSync('token');
 								getApp().globalData.token = null;
+								uni.$emit('refreshToken', { token: null });
 								let pages = getCurrentPages();
 								let prevPage = pages[pages.length - 2];
 								prevPage.onLoad();

@@ -1,4 +1,4 @@
-import { Config } from '@/config/config.js'
+import Config from '@/config/config.js'
 
 const http = {}
 const headers = {}

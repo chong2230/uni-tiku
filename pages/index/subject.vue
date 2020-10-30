@@ -22,7 +22,7 @@
 
 <script>
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import Config from '@/config/config.js'
 	
 	export default {
 		data() {

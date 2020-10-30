@@ -1,12 +1,12 @@
 <template>
 	<view class="content">
 		<image class="user-img" :src="headerUrl"></image>
-		<view class="user" @click="goLogin" :hover-class="!login ? 'logo-hover' : ''">			
+		<view class="user" @click="onClickAuthor" :hover-class="!login ? 'logo-hover' : ''">			
 			<image class="avatarIcon" src="/static/images/defaultAvatar.jpg" v-if="info.avatarImage == undefined"></image>
 			<image class="avatarIcon" :src="getAvatarIcon" v-else></image>
 			<view class="avatarInfo">
 				<text class="name">{{login ? info.nickName : '您未登录'}}</text>
-				<text class="phone">{{info.phone || '点击头像登录'}}</text>
+				<text class="phone">{{getPhone}}</text>
 			</view>
 		</view>
 		<view class="center-list">
@@ -15,7 +15,7 @@
 				<text class="list-text">账户</text>
 				<image class="right-arrow" src="/static/images/account/right-arrow.png"></image>
 			</view> -->
-			<display-item source="/static/images/account/nick.png" txt1="账户" :onClick="goBalance"></display-item>
+			<display-item source="/static/images/account/nick.png" txt1="账户" :showBottomBorder="false" :onClick="goBalance"></display-item>
 			<view class="center-list-item">
 				<image class="icon" src="/static/images/account/star.png"></image>
 				<text class="list-text">已购试卷</text>
@@ -51,7 +51,7 @@
 
 <script>
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import Config from '@/config/config.js'
 	import displayItem from '@/components/display-item.vue';
 	export default {
 		components: { displayItem },
@@ -64,13 +64,36 @@
 			}
 		},
 		onLoad(e) {
-			if (getApp().globalData.token) this.login = true;
-			else this.login = false;
-			this.load();
+			if (getApp().globalData.token) {
+				this.login = true;
+				this.load();
+			} else {
+				this.login = false;
+			}
+			uni.$on('refreshAccount', (data)=>{
+				if (data) {
+					this.info = Object.assign({}, this.info, data);
+				} else {
+					this.info = {};
+				}
+			})
+			uni.$on('refreshToken', (data)=>{
+				if (data && data.token) {
+					this.login = true;
+					this.load();
+				} else {
+					this.login = false;
+					this.info = {};
+				}
+			})
 		},
 		computed: {
 			getAvatarIcon() {
 				return Config.baseUrl + this.info.avatarImage;
+			},
+			getPhone() {
+				let phone = this.info.phone;
+				return phone ? phone.substr(0, 3) + '****' + phone.substr(phone.length-4, 4) : '点击头像登录';
 			}
 		},
 		methods: {
@@ -103,6 +126,15 @@
 						if (result.data) this.member = result.data;
 					}
 				});
+			},
+			onClickAuthor() {
+				if (!this.login) {
+					this.goLogin();
+				} else {
+					uni.navigateTo({
+						url: '/pages/account/profile?info=' + JSON.stringify(this.info)
+					});
+				}
 			},
 			goLogin() {
 				if (!this.login) {
@@ -183,18 +215,23 @@
 	.avatarInfo {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		/* justify-content: center; */
 		align-items: center;
-		margin-left: 20rpx;
+		margin-left: 30rpx;
+		padding: 20rpx 0;
 	}
 	.name {
 		font-weight: bold; 
 		font-size: 30rpx;
+		width: 240rpx;
+		line-height: 50rpx;
 	}
 	.phone {
 		color: #828282;
 		font-size: 26rpx; 
-		top: 10rpx;
+		/* top: 10rpx; */
+		width: 240rpx;
+		line-height: 50rpx;
 	}
 	.user-img {
 		width: 100%;

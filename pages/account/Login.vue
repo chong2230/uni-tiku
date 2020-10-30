@@ -13,7 +13,7 @@
 
 <script>
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import Config from '@/config/config.js'
 	export default {
 		data() {
 			return {
@@ -53,6 +53,7 @@
 				api.login(params).then((result)=>{
 					if (result.code == 0) {
 						getApp().globalData.token = result.data.token;
+						uni.$emit('refreshToken', { token: result.data.token });
 						try {
 						    uni.setStorageSync('token', result.data.token);							
 						} catch (e) {

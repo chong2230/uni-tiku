@@ -10,7 +10,7 @@
 <script>
 	import displayItem from '@/components/display-item.vue'
 	import api from '@/common/api.js'
-	import { Config } from '@/config/config.js'
+	import Config from '@/config/config.js'
 	
 	export default {
 		components: {displayItem},

@@ -9,9 +9,24 @@ import api from './common/api.js'
 import config from './config/config.js'
 
 Vue.config.productionTip = false
+
+const toast = (title, duration=1500, mask=false, icon='none')=>{
+	//统一提示方便全局修改
+	if(Boolean(title) === false){
+		return;
+	}
+	uni.showToast({
+		title,
+		duration,
+		mask,
+		icon
+	});
+}
+
 Vue.prototype.$http = http
 Vue.prototype.$api = api
 Vue.prototype.$config = config
+Vue.prototype.$app = { toast };
 
 App.mpType = 'app'
 
