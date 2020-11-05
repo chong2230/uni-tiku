@@ -41,7 +41,7 @@
 			},
 		},
 		mounted() {
-			console.log(this.list);
+			console.log('timucard ', this.list);
 		},
 		methods: {
 			getBtnCls(item, index) {

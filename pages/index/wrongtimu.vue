@@ -5,7 +5,7 @@
 				<text class="type">{{info.type}}</text>
 				<text v-if="tip" class="tip">{{' ' + tip}}</text>
 			</view>
-			<text v-if="info.name" class="title">{{curIndex + '. ' + getName}}</text>
+			<rich-text v-if="info.name" class="title" :nodes="curIndex + '. ' + getName"></rich-text>
 			<view v-if="info.type == '填空题'">
 				<view v-for="(item, index) in info.choices" :key="index">
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(index)+1}}</text>
@@ -35,28 +35,52 @@
 				<view class="analyse-tip">答案与解析</view>
 				<text class="analyse-answer">参考答案：{{getAnswers}}</Text>
 				<view v-for="(item, index) in info.analysis" :key="index">
-					<text class="analyse-content">{{item.replace(/^\d*\./, '')}}</text>
+					<!-- <text class="analyse-content">{{item.replace(/^\d*\./, '')}}</text> -->
+					<rich-text class="analyse-content" :nodes="item.replace(/^\d*\./, '')"></rich-text>
 				</view>
 			</view>
 		</scroll-view>
+		<view class="bottom">
+			<button class="button" :class="getAnalyseCls" @click="getAnalyse">查看解析</button>
+			<button class="button" :class="getCollectCls" @click="collect">{{getCollectText}}</button>
+			<button class="button" :class="getPrevCls" @click="getPrev">上一题</button>
+			<button class="button" :class="getNextCls" @click="getNext">下一题</button>
+			<button class="button" @click="getScantron">{{getCurrentTotalLabel}}</button>
+		</view>
+		<view class="overlay" v-if="showModal" @click="hideModal"></view>
+		<timu-card class="timu-card" v-if="showCardModal" :curIndex="curIndex-1"
+			:list="newlist" :isAnalyse="isAnalyse"
+			@choose="chooseTimu" @handlePaper="handlePaper"></timu-card>
 	</view>
 </template>
 
 <script>
+	import api from '@/common/api.js'	
 	import timu from './timu.vue';
+	import TimuCard from './timucard.vue';
+	
 	export default {
 		extends: timu,
+		components: {
+			TimuCard
+		},
 		data() {
 			return {
-				
+				isAnalyse: true
 			}
 		},
 		onLoad(e) {
 			uni.setNavigationBarTitle({
 			　　title: e.name || ''
-			});
-			this.list = e.list ? JSON.parse(e.list) : [];
+			});	
+			this.paperId = e.id;
+			this.list = getApp().globalData.wronglist || [];
 			this.load();
+		},
+		computed: {
+			getCurrentTotalLabel() {
+			    return this.curIndex + '/' + this.total;
+			}
 		},
 		methods: {
 			load() {
@@ -85,29 +109,23 @@
 				
 			},
 			doNext() {
-				let list = this.list;
+				let list = this.list;	
 				let index = 0;
+				this.newlist = [];
 				// 和答题卡接口数据统一
 				for (let i=0; i<list.length; i++) {
-					let d = {
-						id: list[i]
-					}
-					list.push(d);
-					// 存储到newlist中
+					let d = list[i];
 					if (i > 0 && i % this.count == 0) index++;
 					d.index = i;
 					this.newlist[index] = this.newlist[index] || [];
 					this.newlist[index].push(d);
-				} 
-				let showAnalyse = [];
+				}
 				if (this.isAnalyse) {
 					for (let i in list) {
-						showAnalyse[i] = true;
 						this.$set(this.showAnalyse, i, true);
 					}
 				}
 				this.total = list.length;
-				// this.showAnalyse = showAnalyse;
 				this.getTimu();
 			},
 			// 单个题目显示答案和解析，不能选择
@@ -117,10 +135,7 @@
 			// 获取答题卡信息
 			getScantron() {
 				this.showCard();
-			},
-			getCurrentTotalLabel() {
-			    return this.index + '/' + this.total;
-			}
+			}			
 		}
 	}
 </script>

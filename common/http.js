@@ -10,11 +10,7 @@ http.request = (url, data, method, power) => {
 == 文件下载接口列表
 == 验证码登录 */
 	let token = getApp().globalData.token;
-    // try {
-    //     token = uni.getStorageSync('token');
-    // } catch (e) {
-    //     // error
-    // }    
+	let plt = getApp().globalData.plt || 'miniprogram';  
     switch (power){
         case 1:
             headers['Authorization'] = 'Basic a3N1ZGk6a3N1ZGk='
@@ -32,7 +28,7 @@ http.request = (url, data, method, power) => {
             break;
     }
     data = data || {};
-	data.plt = 'miniprogram';
+	data.plt = plt;
 	data.dt = new Date().getTime();
 	let ver = Config.version;
 	data.ver = ver;

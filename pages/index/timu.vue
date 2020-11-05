@@ -5,11 +5,13 @@
 				<text class="type">{{info.type}}</text>
 				<text v-if="tip" class="tip">{{' ' + tip}}</text>
 			</view>
-			<text v-if="info.name" class="title">{{curIndex + '. ' + getName}}</text>
+			<rich-text v-if="info.name" class="title" :nodes="curIndex + '. ' + getName"></rich-text>
 			<view v-if="info.type == '填空题'">
 				<view v-for="(item, index) in info.choices" :key="index">
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(index)+1}}</text>
-					<view v-if="askList[index].ask" class="html-style" v-html="getAskContent(index)"></view>
+					<view v-if="askList[index].ask" class="html-style">
+						<rich-text :nodes="getAskContent(index)"></rich-text>
+					</view>					
 					<input placeholder="请输入您的答案" />
 				</view>
 			</view>
@@ -17,25 +19,34 @@
 					|| info.type == '计算题' || info.type == '综合题' || info.type == '案例题'">
 				<view v-for="(item, index) in info.choices" :key="index">	
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(index)+1}}</text>
-					<view v-if="askList[index].ask" class="html-style" v-html="getAskContent(index)"></view>
+					<view v-if="askList[index].ask" class="html-style">
+						<rich-text :nodes="getAskContent(index)"></rich-text>
+					</view>
 				</view>
 			</view>
 			<view v-else>
 				<view v-for="(choice, i) in info.choices" :key="i">
 					<text v-if="info.choices.length > 1" class="question-text">问题{{parseInt(i)+1}}</text>
-					<view v-if="askList[i].ask" class="html-style" v-html="getAskContent(i)"></view>
+					<view v-if="askList[i].ask" class="html-style">
+						<rich-text :nodes="getAskContent(i)"></rich-text>
+					</view>
 					<view v-for="(obj, key) in choice" @click="choose(key, i)" :key="key">
 						<view v-if="key">
-							<text :class="[currentAnswers[i] && currentAnswers[i].indexOf(key) != -1 ? 'selectChoiceText' : 'choiceText']">{{getChoiceText(choice, key)}}</text>
+							<view class="choice-img-view" v-if="choice[key].indexOf('<img') != -1">
+								<text :class="[currentAnswers[i] && currentAnswers[i].indexOf(key) != -1 ? 'selectChoiceText' : 'choiceText']">{{getImgChoiceText(choice, key)}}</text>
+								<rich-text class="choice-img" :nodes="choice[key]"></rich-text>
+							</view>
+							<text v-else :class="[currentAnswers[i] && currentAnswers[i].indexOf(key) != -1 ? 'selectChoiceText' : 'choiceText']">{{getChoiceText(choice, key)}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view v-if="showAnalyse[curIndex-1]" class="analyse-view">
-				<view class="analyse-tip">答案与解析</view>
-				<text class="analyse-answer">参考答案：{{getAnswers}}</Text>
+				<view class="analyse-tip"  v-if="info.answers">答案与解析</view>
+				<text class="analyse-answer" v-if="info.answers">参考答案：{{getAnswers}}</Text>
 				<view v-for="(item, index) in info.analysis" :key="index">
-					<text class="analyse-content">{{item.replace(/^\d*\./, '')}}</text>
+					<!-- <text class="analyse-content">{{item.replace(/^\d*\./, '')}}</text> -->
+					<rich-text class="analyse-content" :nodes="item.replace(/^\d*\./, '')"></rich-text>
 				</view>
 			</view>
 		</scroll-view>
@@ -105,7 +116,7 @@
 			getAnswers() {
 				let answer = this.info.answers;
 				if (answer && answer instanceof Array) answer = answer.join('    ');
-				return answer;
+				return answer || '';
 			},
 			getAnalyseCls() {
 				return !this.showAnalyse[this.curIndex-1] ? 'button-disabled' : '';
@@ -140,7 +151,6 @@
 				}
 				api.getTimuList(params).then((result)=>{
 					if (result.code == 0) {
-						console.log('getTimuList ', result.data);
 						let list = [];
 						let index = 0;
 						// 和答题卡接口数据统一
@@ -148,12 +158,7 @@
 							let d = {
 								id: result.data[i]
 							}
-							list.push(d);
-							// 存储到newlist中
-							// if (i > 0 && i % this.count == 0) index++;
-							// d.index = i;
-							// this.newlist[index] = this.newlist[index] || [];
-							// this.newlist[index].push(d);
+							list.push(d);							
 						} 
 						let showAnalyse = [];
 						if (this.isAnalyse) {
@@ -177,8 +182,6 @@
 			getTimu(id, index) {
 				if (!id) id = this.getCurrent();
 				let params = {
-					// professionId: getApp().globalData.professionId,
-					// courseId: getApp().globalData.courseId,
 					questionId: id,
 					paperId: this.paperId,
 					type: this.type,
@@ -265,6 +268,9 @@
 					return choiceText;					
 				}
 				return '';
+			},
+			getImgChoiceText(choice, key) {
+				return key.toUpperCase() + '. ';
 			},
 			// doModel: 1 练习模式 2 考试模式
 			// 考试模式时历年真题、模拟试卷不能查看解析
@@ -468,7 +474,6 @@
 						};
 						api.getScantron(params).then((result)=>{
 							if (result.code == 0) {
-								console.log('getScantron ', result.data);
 								this.isFetchScantron = true;
 								this.list = result.data;
 								let index = 0;
@@ -545,8 +550,8 @@
 		flex: 1;
 	}
 	.scroll-view {
-		margin: 30rpx;
-		flex: 1;
+		width: calc(100% - 60rpx);
+		margin: 0 30rpx 60rpx 30rpx;
 	}
 	.type {
 		font-size: 32rpx;
@@ -564,12 +569,9 @@
 		color: #29B581;
 		height: 40rpx;
 		margin-top: 10rpx;
-		margin-top: 10rpx;
 	}
-	.html-style {
-		flex: 1;
-		flex-direction: column;
-		margin-top: 20rpx 10rpx;
+	.html-style {		
+		margin: 20rpx;
 		background-color: #FFFFFF;
 	}
 	.choice-text {
@@ -614,13 +616,15 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		margin-bottom: 10rpx;
+		align-items: center;
 		width: 100%;
-		border-top-color: #e0e0e0;
-		border-top-width: 1rpx;
+		height: 80rpx;
+		border-top-color: #F8F8F8;
+		border-top-width: 2rpx;
 		border-top-style: solid;
-		position: absolute;
+		position: fixed;
 		bottom: 0;
+		background-color: #FFFFFF;
 	}
 	.button {
 		/* margin: 40rpx; */
@@ -650,7 +654,7 @@
 		opacity: 0.5;
 	}
 	.timu-card {
-		position: absolute;
+		position: fixed;
 		width: 100%;
 		height: 824rpx;
 		left: 0;
@@ -660,5 +664,10 @@
 	}
 	.selectChoiceText {
 		color: #29B581;
+	}
+	.choice-img-view {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

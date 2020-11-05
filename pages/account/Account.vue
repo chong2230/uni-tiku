@@ -23,12 +23,12 @@
 			</view>
 		</view>
 		<view class="center-list">
-			<view class="center-list-item border-bottom">
+			<view class="center-list-item border-bottom" @click="onPress(7)">
 				<image class="icon" src="/static/images/account/hobby.png"></image>
 				<text class="list-text">我的收藏</text>
 				<image class="right-arrow" src="/static/images/icon/right-arrow.png"></image>
 			</view>
-			<view class="center-list-item">
+			<view class="center-list-item" @click="onPress(9)">
 				<image class="icon" src="/static/images/account/publish.png"></image>
 				<text class="list-text">做题记录</text>
 				<image class="right-arrow" src="/static/images/icon/right-arrow.png"></image>
@@ -128,6 +128,7 @@
 				});
 			},
 			onClickAuthor() {
+				console.log(this.login);
 				if (!this.login) {
 					this.goLogin();
 				} else {
@@ -167,8 +168,8 @@
 					break;
 					case 3:	// 礼券
 					break;
-					case 4:
-					case 8:
+					case 4:	// 分享有赏
+					case 8:	// 我的下载
 						uni.showToast({
 							title: '程序小哥正在快马加鞭，敬请期待噢~',
 							icon: 'none'
@@ -179,8 +180,14 @@
 					case 6:	// 留言
 					break;
 					case 7: // 收藏
-					break;
+						uni.navigateTo({
+							url: '/pages/index/mycollect'
+						});
+						break;
 					case 9:	// 做题记录
+						uni.navigateTo({
+							url: '/pages/index/myrecord'
+						});
 					break;
 					case 10:	// 错题库
 					break;

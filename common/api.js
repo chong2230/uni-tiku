@@ -71,7 +71,7 @@ api.getMyRecord = (params) => http.post('/question/doRecord', params);
 /**
  * 获取错题库列表
  */
-api.getWrongTimuList = (params) => http.post('/question/wrong', params);
+api.getWrongTimuList = (params) => http.get('/question/wrong', params);
 /**
  * 获取正确题目列表
  */

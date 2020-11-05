@@ -5,11 +5,10 @@
 				<view class="top">
 					<text class="type">{{item.type}}</text>
 					<text class="title">{{item.name}}</text>
-					<image v-if="item.price > 0" src="/static/images/icon/pay.png"></image>
+					<image class="pay" v-if="item.price > 0" src="/static/images/icon/pay.png"></image>
 				</view>
 				<view class="bottom">
 					<text class="level">{{item.level}}</text>
-					<!-- <view class="space"></view> -->
 					<button v-if="!getNeedBuy(item)
 						&& item.userStatus == 3" class="handle-btn analysis-btn"
 						@click="startPractise(item, true)">查看解析</button>
@@ -209,30 +208,39 @@
 	.item {
 		width: 100%;
 		height: 160rpx;
-		flex-direction: row;
+		padding-top: 20rpx;
+		background-color: #FFFFFF;
+		border-bottom: solid 2rpx #F8F8F8;
 	}
 	.top {
 		width: 100%;
 		flex-direction: row;
-		justify-content: flex-start;
+		align-items: center;
 		height: 60rpx;
+		padding: 0 20rpx;
 	}
 	.type {
 		color: #29B581;
 		font-size: 32rpx;
-		margin-left: 20rpx;
 	}
 	.title {
 		color: #1A1A1A;
 		font-size: 32rpx;
 		margin-left: 20rpx;
 	}
+	.pay {
+		width: 32rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
+		top: 8rpx;
+		position: relative;
+	}
 	.bottom {
 		display: flex;
 		flex-direction: row;
 		height: 60rpx;
 		align-items: center;
-		margin-bottom: 20rpx;
+		margin-top: 20rpx;
 	}
 	.level {
 		flex: 1;
@@ -254,7 +262,4 @@
 		font-size: 26rpx;
 		margin-right: 20rpx;
 	}
-	/* .analysis-btn {
-		margin-right: 20rpx;
-	} */
 </style>

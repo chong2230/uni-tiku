@@ -201,7 +201,7 @@
 		width: 100%;
 	}
 	.btn {
-		width: calc(calc(100% / 2) - 60rpx);
+		width: calc(50% - 60rpx);
 		height: 60rpx;
 		line-height: 60rpx;
 		margin: 20rpx 30rpx;

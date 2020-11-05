@@ -6,10 +6,18 @@
 			course: {},
 			professionId: 1,
 			courseId: 1,
-			host: ''
+			host: '',
+			plt: '',
+			wronglist: []	// 错题库
 		}, 
 		onLaunch: function() {
 			console.log('App Launch')
+			try {
+			    const res = uni.getSystemInfoSync();
+				this.globalData.plt = res.platform;		
+			} catch (e) {
+			    // error
+			}
 			if (typeof plus !== 'undefined') plus.screen.lockOrientation('portrait-primary'); //锁定			
 		},
 		onShow: function() {

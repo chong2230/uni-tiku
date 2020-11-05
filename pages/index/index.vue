@@ -144,7 +144,7 @@
 				switch (data.name) {
 					case '试题收藏': 
 						uni.navigateTo({
-							url: '/pages/index/mycollect?' + parseObj(params)
+							url: '/pages/index/mycollect'
 						});
 						break;
 					case '做题记录':
@@ -153,6 +153,7 @@
 						});
 						break;
 					case '错题库':
+						this.getWrongTimuList(data);
 						break;
 					case '题库笔记':
 						break;
@@ -176,8 +177,9 @@
 					ids.push(getApp().globalData.course.id);
 					params.curriculumIds = ids.join(',');
 				}
+				console.log(params);
 				api.getWrongTimuList(params).then((result)=>{
-					// console.log('getTimuList ', result);
+					console.log('getTimuList ', result);
 					if (result.code == 0) {
 						if (result.data && result.data.length == 0) {
 							uni.showToast({
@@ -185,15 +187,16 @@
 								icon: "none"
 							});
 						} else {
-							let obj = {
-								id: data.id, 
-								course: this.curCourse,
-								isAnalyse: true, 
-								from: 'WrongTimu',
-								list: result.data,
-							}
+							// let obj = {
+							// 	id: data.id, 
+							// 	course: this.curCourse,
+							// 	isAnalyse: true, 
+							// 	from: 'WrongTimu',
+							// 	list: result.data,
+							// }
+							getApp().globalData.wronglist = result.data;
 							uni.navigateTo({
-								url: '/pages/index/wrongtimu?' + parseObj(obj)
+								url: '/pages/index/wrongtimu?id=' + data.id
 							});
 						}
 					} else if (result.code == 2) {
@@ -233,22 +236,22 @@
 		background-color: #f8f8f8;
 	}
 	.header {
-		height: 60rpx;
+		height: 50rpx;
 		justify-content: center;
 		align-items: center;
-		padding-bottom: 20rpx;
+		padding-bottom: 10rpx;
 	}
 	.header-title {
 		font-size: 34rpx;
 		color: #333333;
 		font-weight: 400;
-		height: 60rpx;
-		line-height: 60rpx;
+		height: 50rpx;
+		line-height: 50rpx;
 		align-self: center;
 		text-align: center;
 	}
 	.uni-margin-wrap {
-		width:690rpx;
+		width: 690rpx;
 		margin:0 30rpx;
 	}
 	.swiper {
@@ -312,10 +315,11 @@
 	}
 
 	.title-bar {
+		display: flex;
 		width: 100%;
+		height: 50rpx;
+		align-items: center;
 		background-color: white;
-		border-bottom-color: #e2e3e4;
-		border-bottom-width: 2;
 		margin-top: 10rpx;
 		padding: 10rpx;
 		font-weight: bold;
@@ -323,10 +327,10 @@
 
 	.title {
 		font-size: 36rpx;
-		color: #8f8f94;
-		margin-top: 20rpx;
-		padding-left: 20rpx;
+		color: #8f8f94;		
+		padding-left: 40rpx;
 		height: 30rpx;
+		line-height: 30rpx;
 		text-align: left;
 		position: relative;
 	}
